@@ -282,6 +282,7 @@ class RsCardSettingMenu extends StatelessWidget {
         buttonColor: RsColorScheme.primaryLight.withOpacity(0.2),
         splashColor: RsColorScheme.secondary,
         height: 60.w,
+        margin: EdgeInsets.only(bottom: 16.w),
         onTap: onTap,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

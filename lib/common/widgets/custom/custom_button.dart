@@ -13,18 +13,21 @@ class RsButton extends StatelessWidget {
     this.height = 50,
     this.radius = 40,
     this.width = 200,
+    this.margin = const EdgeInsets.all(0),
   });
 
   final Widget child;
   final void Function() onTap;
   final Color buttonColor, splashColor;
   final double height, radius, width;
+  final EdgeInsets margin;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width.w,
       height: height.w,
+      margin: margin,
       decoration: BoxDecoration(
         color: buttonColor,
         borderRadius: BorderRadius.circular(radius),

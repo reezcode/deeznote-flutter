@@ -3,6 +3,7 @@ import 'package:deeznote/app/modules/home/controllers/home_controller.dart';
 import 'package:deeznote/common/extensions/gaps.dart';
 import 'package:deeznote/common/utils/screen.dart';
 import 'package:deeznote/common/widgets/prebuilt/rs_custom_card.dart';
+import 'package:deeznote/config/main_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -55,29 +56,16 @@ class ProfileSection extends StatelessWidget {
           ),
         ),
         RsBottomSheet(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          RsCardSettingMenu(
-              icon: Icons.edit_square,
-              title: "Edit Persnal Data",
-              description: "Change your personal data",
-              onTap: () {}),
-          16.gH,
-          RsCardSettingMenu(
-              icon: Icons.restore,
-              title: "Forgot Password",
-              description: "Recover your password",
-              onTap: () {}),
-          16.gH,
-          RsCardSettingMenu(
-              icon: Icons.fingerprint_rounded,
-              title: "Update Password",
-              description: "Change your password",
-              onTap: () {}),
-          16.gH,
-          RsCardSettingMenu(
-              icon: Icons.help_rounded,
-              title: "Help & Support",
-              description: "Get help and support",
-              onTap: () {}),
+          ...MainConfig()
+              .profileListButton
+              .map(
+                (e) => RsCardSettingMenu(
+                    icon: e['icon'],
+                    title: e['title'],
+                    description: e['description'],
+                    onTap: e['onTap']),
+              )
+              .toList(),
           24.gH,
           RsButton(
               width: RsScreen.w,
