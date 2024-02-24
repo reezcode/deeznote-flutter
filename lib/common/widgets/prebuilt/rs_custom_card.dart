@@ -2,13 +2,16 @@
 import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:deeznote/common/extensions/gaps.dart';
+
 import '../../styles/color_scheme.dart';
 import '../../styles/text_style.dart';
 import '../../utils/currency.dart';
 import '../../utils/format_date.dart';
 import '../../utils/screen.dart';
 import '../custom/custom_card.dart';
+import '../rs_turing.dart';
 
 class RsCardH2YS extends StatelessWidget {
   final String name;
@@ -199,5 +202,120 @@ class RsCardH3YC extends StatelessWidget {
             ),
           )),
     );
+  }
+}
+
+class RsCardNotif extends StatelessWidget {
+  final String type;
+  final String title;
+  final String description;
+  final String date;
+  const RsCardNotif({
+    Key? key,
+    required this.type,
+    required this.title,
+    required this.description,
+    required this.date,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RsCard(
+        width: RsScreen.w,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.notifications_active,
+                  color: RsColorScheme.primary,
+                ),
+                8.gW,
+                Text(
+                  type,
+                  style:
+                      RsTextStyle.medium.copyWith(color: RsColorScheme.primary),
+                ),
+                const Spacer(),
+                Text(
+                  "45m ago",
+                  style: RsTextStyle.medium
+                      .copyWith(fontSize: 12.sp, color: RsColorScheme.primary),
+                )
+              ],
+            ),
+            8.gH,
+            Text(
+              title,
+              style: RsTextStyle.bold,
+            ),
+            8.gH,
+            Text(
+              description,
+              style: RsTextStyle.regular.copyWith(fontSize: 12.sp),
+            ),
+          ],
+        ));
+  }
+}
+
+class RsCardSettingMenu extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final Function() onTap;
+  const RsCardSettingMenu({
+    Key? key,
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RsButton(
+        width: RsScreen.w,
+        radius: 10.r,
+        buttonColor: RsColorScheme.primaryLight.withOpacity(0.2),
+        splashColor: RsColorScheme.secondary,
+        height: 60.w,
+        onTap: onTap,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 24.w,
+              color: RsColorScheme.primary,
+            ),
+            8.gW,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: RsTextStyle.bold
+                      .copyWith(fontSize: 14.sp, color: RsColorScheme.primary),
+                ),
+                Text(
+                  description,
+                  style: RsTextStyle.medium.copyWith(
+                      fontSize: 12.sp,
+                      color: RsColorScheme.text.withOpacity(0.8)),
+                ),
+              ],
+            ),
+            const Spacer(),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 18.w,
+              color: RsColorScheme.primary,
+            )
+          ],
+        ));
   }
 }

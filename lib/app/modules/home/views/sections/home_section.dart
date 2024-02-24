@@ -23,17 +23,11 @@ class HomeSection extends StatelessWidget {
       children: [
         Container(
           width: RsScreen.w * 0.75.w,
-          height: RsScreen.w * 0.5.w,
+          height: RsScreen.w * 0.4.w,
           padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Hi Resma!",
-                style: RsTextStyle.bold
-                    .copyWith(color: Colors.white, fontSize: 21.sp),
-              ),
-              24.gH,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -48,14 +42,10 @@ class HomeSection extends StatelessWidget {
                       RsColorScheme.tertiary
                     ],
                     onGetText: (double value) {
-                      return Text(
-                        '${value.toInt()}',
-                        style: const TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      );
+                      return Text('${value.toInt()} \nMeet',
+                          textAlign: TextAlign.center,
+                          style: RsTextStyle.bold
+                              .copyWith(color: Colors.white, fontSize: 18.sp));
                     },
                   ),
                   Column(
@@ -83,7 +73,7 @@ class HomeSection extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "Join Meeting",
+                                "Start Meeting",
                                 style:
                                     RsTextStyle.bold.copyWith(fontSize: 14.sp),
                               ),
@@ -110,6 +100,8 @@ class HomeSection extends StatelessWidget {
           RsButton(
               width: RsScreen.w,
               radius: 10.r,
+              splashColor: RsColorScheme.secondary,
+              onTap: controller.createMeet,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -126,8 +118,7 @@ class HomeSection extends StatelessWidget {
                     color: Colors.white,
                   )
                 ],
-              ),
-              onTap: () {}),
+              )),
           16.gH,
           Text(
             "Upcoming Meeting",

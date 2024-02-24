@@ -1,9 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
-
 import 'package:deeznote/app/modules/home/controllers/home_controller.dart';
+import 'package:deeznote/common/styles/rs_style_library.dart';
+import 'package:deeznote/common/utils/screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-class MeetingSection extends StatelessWidget {
+import '../../../../../common/widgets/prebuilt/rs_custom_v_card.dart';
+
+class MeetingSection extends StatefulWidget {
   final HomeController controller;
   const MeetingSection({
     Key? key,
@@ -11,9 +17,120 @@ class MeetingSection extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<MeetingSection> createState() => _MeetingSectionState();
+}
+
+class _MeetingSectionState extends State<MeetingSection> {
+  @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [],
-    );
+    return Obx(() => Container(
+        width: RsScreen.w,
+        height: RsScreen.h,
+        color: Colors.white,
+        child: SafeArea(
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 0.w, horizontal: 16.w),
+                  child: TableCalendar(
+                      focusedDay: widget.controller.selectedDay.value,
+                      firstDay: DateTime.utc(2021, 10, 4),
+                      lastDay: DateTime.utc(2099, 10, 4),
+                      availableGestures: AvailableGestures.all,
+                      onDaySelected: widget.controller.onDaySelected,
+                      selectedDayPredicate: (day) =>
+                          isSameDay(day, widget.controller.selectedDay.value),
+                      headerStyle: HeaderStyle(
+                          formatButtonVisible: false,
+                          titleCentered: true,
+                          titleTextStyle: RsTextStyle.semiBold.copyWith(
+                              color: RsColorScheme.text, fontSize: 18.sp)),
+                      calendarStyle: CalendarStyle(
+                        holidayTextStyle: RsTextStyle.regular.copyWith(
+                          color: Colors.red,
+                        ),
+                        weekendTextStyle: RsTextStyle.regular.copyWith(
+                          color: Colors.red,
+                        ),
+                        todayDecoration: BoxDecoration(
+                          color: RsColorScheme.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        selectedDecoration: BoxDecoration(
+                          color: RsColorScheme.primary.withOpacity(0.5),
+                          shape: BoxShape.circle,
+                        ),
+                        selectedTextStyle: RsTextStyle.regular.copyWith(
+                          color: Colors.white,
+                        ),
+                        todayTextStyle: RsTextStyle.regular.copyWith(
+                          color: Colors.white,
+                        ),
+                        defaultTextStyle: RsTextStyle.regular.copyWith(
+                          color: Colors.black,
+                        ),
+                        outsideTextStyle: RsTextStyle.regular.copyWith(
+                          color: Colors.grey,
+                        ),
+                        outsideDaysVisible: false,
+                      )),
+                ),
+              ),
+              DraggableScrollableSheet(
+                initialChildSize: 0.5,
+                minChildSize: 0.5,
+                builder: (context, scrollController) {
+                  return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16.r),
+                          topRight: Radius.circular(16.r),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 9,
+                            blurRadius: 15,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      padding: EdgeInsets.all(16.w),
+                      child: ListView.builder(
+                          controller: scrollController,
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            final meet = widget.controller.meetingList[index];
+                            if (index == 0) {
+                              return Center(
+                                child: Container(
+                                    width: 80.w,
+                                    height: 10.w,
+                                    margin: EdgeInsets.only(bottom: 16.h),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          RsColorScheme.grey.withOpacity(0.3),
+                                      borderRadius:
+                                          BorderRadius.circular(100.r),
+                                    )),
+                              );
+                            }
+                            return RsCardV1(
+                                dayLeft: meet["dayLeft"],
+                                title: meet["title"],
+                                date: meet["date"],
+                                time: meet["time"],
+                                client: meet["client"]);
+                          }));
+                },
+              )
+            ],
+          ),
+        )));
   }
 }

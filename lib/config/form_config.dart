@@ -36,4 +36,8 @@ class FormConfig with RsValidationMixin {
       ]),
     ),
   ];
+
+  // List<RsFormModel> profileForm = [
+  //   RsFormModel(formType: Form, name: name, controller: controller)
+  // ];
 }

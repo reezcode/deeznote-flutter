@@ -13,8 +13,7 @@ class MainConfig {
   static GetStorage storage = GetStorage();
   static String kDefaultNetworkImagePlaceholder =
       'https://via.placeholder.com/150';
-  static String kDefaultAssetImagePlaceholder =
-      'assets/images/img_bg_onboarding.png';
+  static String kDefaultAssetImagePlaceholder = 'assets/images/img_bg_auth.png';
   static double kDefaultMargin = 20;
   static double kDefaultPadding = 20;
   static double kDefaultRadius = 10.0;

@@ -65,11 +65,13 @@ class RsScaffold extends StatelessWidget {
                 width: RsScreen.w,
                 height: RsScreen.h,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        bgImg ?? MainConfig.kDefaultAssetImagePlaceholder),
-                    fit: BoxFit.cover,
-                  ),
+                  image: bgImg != null
+                      ? DecorationImage(
+                          image: AssetImage(bgImg ??
+                              MainConfig.kDefaultAssetImagePlaceholder),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                 ),
                 child: withNavbar
                     ? Stack(

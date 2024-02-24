@@ -26,12 +26,15 @@ dependencies:
   form_builder_validators: ^9.0.0
   overlay_support: ^2.1.0
   flutter_animate: ^4.3.0
-  syncfusion_flutter_datepicker: ^23.1.39
+  syncfusion_flutter_datepicker: ^24.2.7
   change_app_package_name: ^1.1.0
   http_parser: ^4.0.2
   socket_io_client: ^2.0.3+1
   google_nav_bar: ^5.0.6
   line_icons: ^2.0.2
+  table_calendar: ^3.0.9
+  animations: ^2.0.11
+  animate_do: ^3.3.3
   get: 4.6.6
   flutter:
     sdk: flutter
