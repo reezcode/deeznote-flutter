@@ -12,6 +12,7 @@ import '../../utils/format_date.dart';
 import '../../utils/screen.dart';
 import '../custom/custom_card.dart';
 import '../rs_turing.dart';
+import 'rs_custom_circle_card.dart';
 
 class RsCardH2YS extends StatelessWidget {
   final String name;
@@ -316,6 +317,77 @@ class RsCardSettingMenu extends StatelessWidget {
               size: 18.w,
               color: RsColorScheme.primary,
             )
+          ],
+        ));
+  }
+}
+
+class RsCardStaff extends StatelessWidget {
+  final String? image;
+  final String? name;
+  final String? role;
+  final bool? isCheck;
+  final void Function() onTap;
+  const RsCardStaff({
+    Key? key,
+    this.image,
+    this.name,
+    this.role,
+    this.isCheck,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RsButton(
+        width: RsScreen.w,
+        radius: 10.r,
+        buttonColor: isCheck!
+            ? RsColorScheme.primary
+            : RsColorScheme.primaryLight.withOpacity(0.2),
+        splashColor: RsColorScheme.secondary,
+        height: 60.w,
+        margin: EdgeInsets.only(bottom: 16.w),
+        onTap: onTap,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            RsCirclePict(
+              image: image,
+            ),
+            8.gW,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  name ?? "Resma Adi Nugroho",
+                  style: RsTextStyle.bold.copyWith(
+                      fontSize: 14.sp,
+                      color: isCheck! ? Colors.white : RsColorScheme.primary),
+                ),
+                Text(
+                  role ?? "Mobile Developer",
+                  style: RsTextStyle.medium.copyWith(
+                      fontSize: 12.sp,
+                      color: isCheck!
+                          ? Colors.white.withOpacity(0.8)
+                          : RsColorScheme.text.withOpacity(0.8)),
+                ),
+              ],
+            ),
+            const Spacer(),
+            isCheck!
+                ? Icon(
+                    Icons.check_circle,
+                    size: 24.w,
+                    color: Colors.white,
+                  )
+                : Icon(
+                    Icons.circle,
+                    size: 24.w,
+                    color: RsColorScheme.primary,
+                  )
           ],
         ));
   }

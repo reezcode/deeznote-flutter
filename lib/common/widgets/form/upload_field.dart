@@ -1,12 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'package:deeznote/common/extensions/gaps.dart';
 
 import '../../../app/data/sources/network/api/rs_core_api.dart';
 import '../../../app/domain/di/controllers/upload_controller.dart';
@@ -172,15 +175,83 @@ class _RsProfileUploadState extends State<RsProfileUpload> {
   }
 }
 
-class RsUploadFile extends StatelessWidget {
-  final bool isMulti;
+class RsUploadFile extends StatefulWidget {
+  final bool? isMulti;
+  final String? label;
+  final String? name;
+  final String? hint;
+  final IconData? icon;
+  final FileType? fileType;
+  final List<String>? allowedExtensions;
   const RsUploadFile({
     Key? key,
-    required this.isMulti,
+    this.isMulti,
+    this.label,
+    this.name,
+    this.hint,
+    this.icon,
+    this.fileType,
+    this.allowedExtensions,
   }) : super(key: key);
 
   @override
+  State<RsUploadFile> createState() => _RsUploadFileState();
+}
+
+class _RsUploadFileState extends State<RsUploadFile> {
+  UploadController controller = Get.find();
+  @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Obx(() => Padding(
+        padding: EdgeInsets.only(bottom: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            (widget.label != null)
+                ? Column(
+                    children: [
+                      Text(
+                        widget.label ?? "",
+                        style: RsTextStyle.semiBold,
+                      ),
+                      12.gH,
+                    ],
+                  )
+                : const SizedBox(),
+            GestureDetector(
+              onTap: () {
+                controller.pickFiles(
+                    fileType: widget.fileType,
+                    allowedExtensions: widget.allowedExtensions);
+              },
+              child: Container(
+                width: RsScreen.w,
+                height: 60.w,
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                decoration: BoxDecoration(
+                    border: Border.all(color: RsColorScheme.grey),
+                    borderRadius: BorderRadius.circular(15.w)),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(widget.icon ?? Icons.upload_rounded,
+                        color: RsColorScheme.grey),
+                    12.gW,
+                    Text(
+                      controller.fileName.value.isNotEmpty
+                          ? controller.fileName.value
+                          : widget.hint ?? "Upload file here",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: RsTextStyle.regular.copyWith(
+                          fontSize: 14.sp,
+                          color: RsColorScheme.text.withOpacity(0.7)),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )));
   }
 }

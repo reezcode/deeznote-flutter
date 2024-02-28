@@ -4,6 +4,8 @@ import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
 import '../modules/create_meet/bindings/create_meet_binding.dart';
 import '../modules/create_meet/views/create_meet_view.dart';
+import '../modules/detail_meet/bindings/detail_meet_binding.dart';
+import '../modules/detail_meet/views/detail_meet_view.dart';
 import '../modules/edit_profile/bindings/edit_profile_binding.dart';
 import '../modules/edit_profile/views/edit_profile_view.dart';
 import '../modules/help_support/bindings/help_support_binding.dart';
@@ -58,6 +60,11 @@ class AppPages {
       name: _Paths.HELP_SUPPORT,
       page: () => const HelpSupportView(),
       binding: HelpSupportBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_MEET,
+      page: () => const DetailMeetView(),
+      binding: DetailMeetBinding(),
     ),
   ];
 }

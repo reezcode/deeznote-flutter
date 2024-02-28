@@ -39,6 +39,7 @@ dependencies:
   flutter:
     sdk: flutter
   simple_circular_progress_bar: ^1.0.2
+  file_picker: ^6.1.1
 
 dev_dependencies:
   build_runner: any

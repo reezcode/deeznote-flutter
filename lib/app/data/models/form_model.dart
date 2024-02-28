@@ -1,27 +1,29 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/enums/form_type.dart';
 import 'response_model.dart';
 
 class RsFormModel {
-  RsFormModel({
-    required this.formType,
-    required this.name,
-    this.hint,
-    this.label,
-    this.valueField,
-    this.textField,
-    required this.controller,
-    this.icon,
-    this.onObscurePressed,
-    this.onObscureSecondPressed,
-    this.obscureText = false,
-    this.obscureSecondText = false,
-    this.onChanged,
-    this.dataDropdown,
-    this.futureDataDropdown,
-    this.validator,
-  });
+  RsFormModel(
+      {required this.formType,
+      required this.name,
+      this.hint,
+      this.label,
+      this.valueField,
+      this.textField,
+      required this.controller,
+      this.icon,
+      this.onObscurePressed,
+      this.onObscureSecondPressed,
+      this.obscureText = false,
+      this.obscureSecondText = false,
+      this.onChanged,
+      this.dataDropdown,
+      this.futureDataDropdown,
+      this.validator,
+      this.allowedExtensions,
+      this.fileType});
 
   FormType formType;
   String name;
@@ -39,21 +41,26 @@ class RsFormModel {
   void Function(dynamic)? onChanged;
   List<dynamic>? dataDropdown;
   Future<ResponseModel>? futureDataDropdown;
+  FileType? fileType;
+  List<String>? allowedExtensions;
 
-  RsFormModel copyWith(
-          {FormType? formType,
-          String? name,
-          String? hint,
-          String? label,
-          String? valueField,
-          String? textField,
-          TextEditingController? controller,
-          IconData? icon,
-          void Function()? onObscurePressed,
-          bool? obscureText,
-          void Function(dynamic)? onChanged,
-          List<dynamic>? dataDropdown,
-          Future<ResponseModel>? futureDataDropdown}) =>
+  RsFormModel copyWith({
+    FormType? formType,
+    String? name,
+    String? hint,
+    String? label,
+    String? valueField,
+    String? textField,
+    TextEditingController? controller,
+    IconData? icon,
+    void Function()? onObscurePressed,
+    bool? obscureText,
+    void Function(dynamic)? onChanged,
+    List<dynamic>? dataDropdown,
+    Future<ResponseModel>? futureDataDropdown,
+    FileType? fileType,
+    List<String>? allowedExtensions,
+  }) =>
       RsFormModel(
         formType: formType ?? this.formType,
         name: name ?? this.name,
@@ -65,12 +72,15 @@ class RsFormModel {
         icon: icon ?? this.icon,
         onObscurePressed: onObscurePressed ?? this.onObscurePressed,
         obscureText: obscureText ?? this.obscureText,
-        obscureSecondText: obscureSecondText,
-        onObscureSecondPressed: onObscureSecondPressed,
-        validator: validator,
+        obscureSecondText: obscureSecondText ?? this.obscureSecondText,
+        onObscureSecondPressed:
+            onObscureSecondPressed ?? this.onObscureSecondPressed,
+        validator: validator ?? this.validator,
         onChanged: onChanged ?? this.onChanged,
         dataDropdown: dataDropdown ?? this.dataDropdown,
         futureDataDropdown: futureDataDropdown ?? this.futureDataDropdown,
+        fileType: fileType ?? this.fileType,
+        allowedExtensions: allowedExtensions ?? this.allowedExtensions,
       );
 
   factory RsFormModel.fromJson(Map<String, dynamic> json) => RsFormModel(
@@ -90,6 +100,8 @@ class RsFormModel {
         dataDropdown: json["dataDropdown"],
         validator: json["validator"],
         futureDataDropdown: json["futureDataDropdown"],
+        allowedExtensions: json["allowedExtensions"],
+        fileType: json["fileType"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -109,5 +121,7 @@ class RsFormModel {
         "onChanged": onChanged,
         "dataDropdown": dataDropdown,
         "futureDataDropdown": futureDataDropdown,
+        "allowedExtensions": allowedExtensions,
+        "fileType": fileType,
       };
 }

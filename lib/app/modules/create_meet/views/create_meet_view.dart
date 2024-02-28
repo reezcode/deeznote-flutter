@@ -1,3 +1,5 @@
+import 'package:deeznote/common/enums/form_type.dart';
+import 'package:deeznote/config/form_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,7 +14,20 @@ class CreateMeetView extends GetView<CreateMeetController> {
   @override
   Widget build(BuildContext context) {
     return RsScaffold(
-      body: SizedBox(),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.w),
+        child: ListView(
+          children: [
+            RsFormContainer(
+              action: FormAction.create,
+              config: FormConfig().createMeetForm,
+              buttonText: "Create",
+              icon: Icons.add_circle,
+              onCreate: (v) {},
+            )
+          ],
+        ),
+      ),
       appbar: AppBar(
         shadowColor: Colors.transparent,
         centerTitle: false,

@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import 'package:deeznote/common/extensions/gaps.dart';
+import 'package:deeznote/common/widgets/form/dialog_pick.dart';
 
 import '../../../app/data/models/form_model.dart';
 import '../../../app/data/models/response_model.dart';
@@ -31,6 +34,8 @@ class RsFormBuilder extends StatelessWidget {
   final void Function(dynamic)? onChanged;
   final List<dynamic>? dataDropdown;
   final Future<ResponseModel>? futureDataDropdown;
+  final FileType? fileType;
+  final List<String>? allowedExtensions;
   const RsFormBuilder({
     Key? key,
     required this.formType,
@@ -49,6 +54,8 @@ class RsFormBuilder extends StatelessWidget {
     this.onChanged,
     this.dataDropdown,
     this.futureDataDropdown,
+    this.fileType,
+    this.allowedExtensions,
   }) : super(key: key);
 
   @override
@@ -88,8 +95,13 @@ class RsFormBuilder extends StatelessWidget {
         controller: controller,
       );
     } else if (formType == FormType.upload) {
-      return RsProfileUpload(
-        controller: controller,
+      return RsUploadFile(
+        hint: hint,
+        label: label,
+        name: name,
+        icon: icon,
+        fileType: fileType,
+        allowedExtensions: allowedExtensions,
       );
     } else if (formType == FormType.confirmPassword) {
       return RsPasswordField(
@@ -101,6 +113,18 @@ class RsFormBuilder extends StatelessWidget {
         obscureText: obscureSecondText ?? true,
         onObscurePressed: onObscureSecondPressed,
         onChanged: onChanged,
+      );
+    } else if (formType == FormType.date) {
+      return RsDatePicker(
+        controller: controller,
+        hint: hint,
+        label: label,
+        name: name,
+        onChanged: onChanged,
+      );
+    } else if (formType == FormType.dialogPick) {
+      return RsDialogPick(
+        label: label,
       );
     } else {
       return const SizedBox();

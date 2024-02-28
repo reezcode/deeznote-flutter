@@ -17,6 +17,7 @@ enum FormType {
   rating,
   upload,
   section,
+  dialogPick,
   child,
 }
 

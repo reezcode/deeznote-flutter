@@ -1,12 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:deeznote/common/extensions/gaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:deeznote/common/extensions/gaps.dart';
 
-import '../../styles/color_scheme.dart';
-import '../../styles/input_decoration.dart';
 import '../../styles/rs_style_library.dart';
 import '../rs_turing.dart';
 
@@ -41,11 +39,17 @@ class _RsTextFieldState extends State<RsTextField> with RsValidationMixin {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.label!,
-              style: RsTextStyle.semiBold,
-            ),
-            12.gH,
+            (widget.label != null)
+                ? Column(
+                    children: [
+                      Text(
+                        widget.label ?? "",
+                        style: RsTextStyle.semiBold,
+                      ),
+                      12.gH,
+                    ],
+                  )
+                : SizedBox(),
             FormBuilderTextField(
               name: widget.name,
               style: RsTextStyle.regular,
@@ -54,7 +58,9 @@ class _RsTextFieldState extends State<RsTextField> with RsValidationMixin {
               cursorColor: RsColorScheme.primary,
               controller: widget.controller,
               decoration: RsInputDecoration.defaultDecoration(
-                  hint: widget.hint, icon: widget.icon, label: widget.label!),
+                  hint: widget.hint,
+                  icon: widget.icon,
+                  label: widget.label ?? ""),
             ),
           ],
         ));

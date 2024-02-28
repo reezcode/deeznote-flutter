@@ -27,10 +27,12 @@ class RsBottomSheet extends StatelessWidget {
           topRight: Radius.circular(20.w),
         ),
       ),
-      child: Column(
-          mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
-          crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
-          children: children),
+      child: SingleChildScrollView(
+        child: Column(
+            mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
+            crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
+            children: children),
+      ),
     );
   }
 }
