@@ -392,3 +392,58 @@ class RsCardStaff extends StatelessWidget {
         ));
   }
 }
+
+class RsCardListDetail extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final Function()? onTap;
+  const RsCardListDetail({
+    Key? key,
+    required this.icon,
+    required this.title,
+    required this.description,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: RsScreen.w,
+        padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 8.h),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                    color: RsColorScheme.text.withOpacity(0.2), width: 1))),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: RsColorScheme.primary,
+              size: 24.w,
+            ),
+            8.gW,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: RsTextStyle.bold
+                      .copyWith(fontSize: 14.sp, color: RsColorScheme.text),
+                ),
+                4.gH,
+                Text(
+                  description,
+                  style: RsTextStyle.medium
+                      .copyWith(fontSize: 12.sp, color: RsColorScheme.text),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

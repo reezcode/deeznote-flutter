@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, invalid_use_of_protected_member
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -253,5 +253,91 @@ class _RsUploadFileState extends State<RsUploadFile> {
             ),
           ],
         )));
+  }
+}
+
+class RsUploadMulti extends StatefulWidget {
+  const RsUploadMulti({super.key});
+
+  @override
+  State<RsUploadMulti> createState() => _RsUploadMultiState();
+}
+
+class _RsUploadMultiState extends State<RsUploadMulti> {
+  UploadController controller = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Documentation Photo',
+          style: RsTextStyle.semiBold.copyWith(
+            color: RsColorScheme.text,
+          ),
+        ),
+        16.gH,
+        Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            runAlignment: WrapAlignment.spaceBetween,
+            direction: Axis.horizontal,
+            runSpacing: 16.w,
+            spacing: 16.w,
+            children: [
+              Obx(
+                () => controller.isUploading.value == true
+                    ? Container(
+                        width: 98.w,
+                        height: 98.w,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffBCC4CF),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: RsColorScheme.primary,
+                            strokeCap: StrokeCap.round,
+                          ),
+                        ),
+                      )
+                    : GestureDetector(
+                        onTap: () async {
+                          await controller.getPhoto();
+                        },
+                        child: Container(
+                          width: 98.w,
+                          height: 98.w,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffBCC4CF),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Center(
+                            child: SizedBox(
+                              width: 36.w,
+                              height: 36.w,
+                              child: Image.asset(
+                                  'assets/icons/ic_camera_fill.png'),
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+              SizedBox(
+                width: RsScreen.w - 32.w - 98.w - 16.w,
+                height: 98.w,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    Obx(
+                      () => Row(
+                        children: controller.photoList.value,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ])
+      ],
+    );
   }
 }

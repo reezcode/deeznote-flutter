@@ -11,6 +11,9 @@ abstract class Routes {
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
   static const HELP_SUPPORT = _Paths.HELP_SUPPORT;
   static const DETAIL_MEET = _Paths.DETAIL_MEET;
+  static const MEETING_NOTES = _Paths.MEETING_NOTES;
+  static const MEETING_SIGN = _Paths.MEETING_SIGN;
+  static const MEETING_PHOTO = _Paths.MEETING_PHOTO;
 }
 
 abstract class _Paths {
@@ -23,4 +26,7 @@ abstract class _Paths {
   static const EDIT_PROFILE = '/edit-profile';
   static const HELP_SUPPORT = '/help-support';
   static const DETAIL_MEET = '/detail-meet';
+  static const MEETING_NOTES = '/meeting-notes';
+  static const MEETING_SIGN = '/meeting-sign';
+  static const MEETING_PHOTO = '/meeting-photo';
 }

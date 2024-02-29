@@ -23,7 +23,7 @@ class CreateMeetView extends GetView<CreateMeetController> {
               config: FormConfig().createMeetForm,
               buttonText: "Create",
               icon: Icons.add_circle,
-              onCreate: (v) {},
+              onCreate: controller.createMeet,
             )
           ],
         ),

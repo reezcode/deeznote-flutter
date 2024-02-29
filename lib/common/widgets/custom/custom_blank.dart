@@ -42,7 +42,7 @@ class CardBlank extends StatelessWidget {
           children: [
             Icon(Icons.upcoming_rounded,
                 color: RsColorScheme.grey.withOpacity(0.7), size: 40),
-            Text("That's all for today",
+            Text("That's all for this week",
                 style: RsTextStyle.medium.copyWith(
                     color: RsColorScheme.grey.withOpacity(0.7),
                     fontSize: 14.sp)),

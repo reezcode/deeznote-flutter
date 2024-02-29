@@ -1,9 +1,11 @@
+import 'package:deeznote/app/routes/app_pages.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 
 class CreateMeetController extends GetxController {
   //TODO: Implement CreateMeetController
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +21,7 @@ class CreateMeetController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void createMeet(GlobalKey<FormBuilderState> form) async {
+    Get.offAllNamed(Routes.HOME);
+  }
 }

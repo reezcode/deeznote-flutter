@@ -35,8 +35,8 @@ class RsDatePicker extends StatelessWidget {
             12.gH,
             FormBuilderDateTimePicker(
               name: 'date',
-              inputType: InputType.date,
-              format: DateFormat('dd-MM-yyyy'),
+              inputType: InputType.both,
+              format: DateFormat('dd-MM-yyyy, hh:mm a'),
               decoration: RsInputDecoration.defaultDecoration(
                   hint: hint, label: label, icon: Icons.date_range_rounded),
               initialDate: DateTime.now(),

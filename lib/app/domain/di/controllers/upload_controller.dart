@@ -1,12 +1,23 @@
 import 'dart:io';
 
+import 'package:deeznote/common/styles/rs_style_library.dart';
+import 'package:deeznote/common/utils/screen.dart';
+import 'package:deeznote/common/widgets/prebuilt/rs_photo_view.dart';
+import 'package:deeznote/common/widgets/rs_turing.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UploadController extends GetxController {
   var imgrUrl = {}.obs;
+  RxBool isUploading = false.obs;
   RxString fileName = "".obs;
   Rx<File> file = File("").obs;
+  RxList<Widget> photoList = <Widget>[].obs;
+  List<String> photoSourceList = [];
+  List<dynamic> mappedPhoto = [];
 
   String getImgUrl() {
     return imgrUrl['preview'];
@@ -29,5 +40,161 @@ class UploadController extends GetxController {
 
       /// UPLOAD TO API HERE
     }
+  }
+
+  Future getPhoto() async {
+    final ImagePicker picker = ImagePicker();
+    void upFile(XFile? imagePicked) async {
+      File imageFile = File(imagePicked!.path);
+      try {
+        isUploading.value = true;
+        final data = {};
+        // final data = await uploadFile(getStorage.read('token'), imageFile,
+        //     callback: (val) {});
+        if (data.isNotEmpty) {
+          isUploading.value = false;
+          mappedPhoto.add({"img_photo": data});
+          int lastIndex = mappedPhoto.length - 1;
+          photoSourceList.add(imagePicked.path);
+          photoList.add(
+            RsPhotoView(
+              imgSrc: FileImage(File(imagePicked.path)),
+              child: Container(
+                width: 98.w,
+                height: 98.w,
+                margin: EdgeInsets.only(right: 8.w),
+                decoration: BoxDecoration(
+                  color: RsColorScheme.primary,
+                  borderRadius: BorderRadius.circular(8.r),
+                  image: DecorationImage(
+                    image: FileImage(File(imagePicked.path)),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        removePhoto(lastIndex);
+                      },
+                      child: Container(
+                        width: 24.w,
+                        height: 24.w,
+                        margin: EdgeInsets.all(4.w),
+                        child: Image.asset('assets/icons/ic_delete.png'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        } else {
+          RsToast.show("Error", "Failed to upload file 😪");
+        }
+      } catch (e) {
+        RsToast.show("Error", "There was an error 😪");
+      }
+    }
+
+    Get.dialog(
+        barrierDismissible: true,
+        Center(
+          child: Container(
+            width: RsScreen.w,
+            height: 130.h,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20), color: Colors.white),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(children: [
+              Text(
+                "Choose Photo Source",
+                style: RsTextStyle.bold,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        final XFile? imagePicked = await picker.pickImage(
+                          source: ImageSource.camera,
+                          imageQuality: 50,
+                        );
+                        upFile(imagePicked);
+                        Get.back();
+                      },
+                      child: Container(
+                        width: 70.w,
+                        height: 70.w,
+                        margin: EdgeInsets.only(top: 10.h),
+                        decoration: BoxDecoration(
+                          color: RsColorScheme.primary,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.camera_alt_rounded,
+                                color: Colors.white, size: 30),
+                            SizedBox(height: 5.h),
+                            Text(
+                              "Camera",
+                              style: RsTextStyle.medium
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        final XFile? imagePicked = await picker.pickImage(
+                          source: ImageSource.gallery,
+                          imageQuality: 50,
+                        );
+                        upFile(imagePicked);
+                        Get.back();
+                      },
+                      child: Container(
+                        width: 70.w,
+                        height: 70.w,
+                        margin: EdgeInsets.only(top: 10.h),
+                        decoration: BoxDecoration(
+                          color: RsColorScheme.primary,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.photo_rounded,
+                                color: Colors.white, size: 30),
+                            SizedBox(height: 5.h),
+                            Text(
+                              "Gallery",
+                              style: RsTextStyle.medium
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ]),
+          ),
+        ));
+  }
+
+  void removePhoto(int index) {
+    photoList.removeAt(index);
+    mappedPhoto.removeAt(index);
+    photoSourceList.removeAt(index);
   }
 }

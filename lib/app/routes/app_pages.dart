@@ -12,6 +12,12 @@ import '../modules/help_support/bindings/help_support_binding.dart';
 import '../modules/help_support/views/help_support_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/meeting_notes/bindings/meeting_notes_binding.dart';
+import '../modules/meeting_notes/views/meeting_notes_view.dart';
+import '../modules/meeting_photo/bindings/meeting_photo_binding.dart';
+import '../modules/meeting_photo/views/meeting_photo_view.dart';
+import '../modules/meeting_sign/bindings/meeting_sign_binding.dart';
+import '../modules/meeting_sign/views/meeting_sign_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
 import '../modules/update_password/bindings/update_password_binding.dart';
@@ -65,6 +71,21 @@ class AppPages {
       name: _Paths.DETAIL_MEET,
       page: () => const DetailMeetView(),
       binding: DetailMeetBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEETING_NOTES,
+      page: () => const MeetingNotesView(),
+      binding: MeetingNotesBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEETING_SIGN,
+      page: () => const MeetingSignView(),
+      binding: MeetingSignBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEETING_PHOTO,
+      page: () => const MeetingPhotoView(),
+      binding: MeetingPhotoBinding(),
     ),
   ];
 }
