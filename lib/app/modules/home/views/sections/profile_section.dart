@@ -71,6 +71,7 @@ class ProfileSection extends StatelessWidget {
               width: RsScreen.w,
               radius: 10.r,
               splashColor: RsColorScheme.secondary,
+              onTap: controller.logOut,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,8 +88,7 @@ class ProfileSection extends StatelessWidget {
                     color: Colors.white,
                   )
                 ],
-              ),
-              onTap: controller.logOut),
+              )),
           32.gH
         ])
       ],

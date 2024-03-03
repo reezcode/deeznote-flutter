@@ -73,6 +73,8 @@ class HomeController extends GetxController {
   }
 
   void logOut() {
+    'token'.remove();
+    'user_detail'.remove();
     Get.offAllNamed(Routes.AUTH);
   }
 
@@ -87,7 +89,7 @@ class HomeController extends GetxController {
 
   Map<int, Widget?> get appBarTitle => {
         0: Text(
-          "Hi ${'name'.load()}!",
+          "Hi ${'user_detail'.load()['name']}!",
           style:
               RsTextStyle.bold.copyWith(color: Colors.white, fontSize: 21.sp),
         ),

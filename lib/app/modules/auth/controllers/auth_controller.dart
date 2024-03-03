@@ -1,5 +1,6 @@
 import 'package:deeznote/app/data/sources/local/local_storage.dart';
 import 'package:deeznote/app/data/sources/network/api/rs_core_api.dart';
+import 'package:deeznote/app/domain/impl/user_impl.dart';
 import 'package:deeznote/app/routes/app_pages.dart';
 import 'package:deeznote/config/endpoints_config.dart';
 import 'package:flutter/material.dart';
@@ -27,25 +28,11 @@ class AuthController extends GetxController {
     super.onClose();
   }
 
-  void authLogin(GlobalKey<FormBuilderState> form) async {
-    EasyLoading.show();
-    try {
-      final res = await RsAPI.instance.post(endpoint: Endpoint.login, data: {
-        "identifier": form.currentState?.value['email'],
-        "password": form.currentState?.value['password']
-      });
-
-      if (res.success) {
-        res.data['token'].toString().save('token');
-        res.data['user'].toString().save('name');
-        Get.offAllNamed(Routes.HOME, arguments: {});
-        EasyLoading.dismiss();
-      }
-    } catch (e) {
-      RsInterceptor.show(e);
-
-      EasyLoading.dismiss();
-    }
-    EasyLoading.dismiss();
+  void authLogin(GlobalKey<FormBuilderState> form) {
+    Map<String, dynamic> data = {
+      "email": form.currentState!.fields['email']!.value,
+      "password": form.currentState!.fields['password']!.value,
+    };
+    UserRepository().login(data: data, callback: (p1) {});
   }
 }
