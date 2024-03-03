@@ -29,11 +29,11 @@ class FormConfig with RsValidationMixin {
       icon: Icons.lock_outline_rounded,
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(errorText: "Password is required"),
-        FormBuilderValidators.minLength(8, errorText: "Minimum 8 characters"),
-        FormBuilderValidators.maxLength(20, errorText: "Maximum 20 characters"),
-        FormBuilderValidators.match(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}',
-            errorText:
-                "Password must contain at least one uppercase letter, one lowercase letter and one number")
+        // FormBuilderValidators.minLength(8, errorText: "Minimum 8 characters"),
+        // FormBuilderValidators.maxLength(20, errorText: "Maximum 20 characters"),
+        // FormBuilderValidators.match(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}',
+        //     errorText:
+        //         "Password must contain at least one uppercase letter, one lowercase letter and one number")
       ]),
     ),
   ];

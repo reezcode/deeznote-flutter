@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'package:deeznote/app/data/sources/local/local_storage.dart';
 import 'package:deeznote/app/modules/home/views/sections/home_section.dart';
 import 'package:deeznote/app/modules/home/views/sections/meetings_section.dart';
 import 'package:deeznote/app/modules/home/views/sections/notif_section.dart';
@@ -71,6 +72,12 @@ class HomeController extends GetxController {
     Get.toNamed(Routes.CREATE_MEET);
   }
 
+  void logOut() {
+    Get.offAllNamed(Routes.AUTH);
+  }
+
+  void startMeet() {}
+
   Map<int, Widget> get pages => {
         0: HomeSection(controller: this),
         1: MeetingSection(controller: this),
@@ -80,7 +87,7 @@ class HomeController extends GetxController {
 
   Map<int, Widget?> get appBarTitle => {
         0: Text(
-          "Hi Resma!",
+          "Hi ${'name'.load()}!",
           style:
               RsTextStyle.bold.copyWith(color: Colors.white, fontSize: 21.sp),
         ),

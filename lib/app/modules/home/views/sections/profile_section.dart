@@ -88,7 +88,7 @@ class ProfileSection extends StatelessWidget {
                   )
                 ],
               ),
-              onTap: () {}),
+              onTap: controller.logOut),
           32.gH
         ])
       ],

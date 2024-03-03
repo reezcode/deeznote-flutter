@@ -81,7 +81,7 @@ class HomeSection extends StatelessWidget {
                               Icon(Icons.video_call_rounded, size: 24.w)
                             ],
                           ),
-                          onTap: () {})
+                          onTap: controller.startMeet)
                     ],
                   )
                 ],

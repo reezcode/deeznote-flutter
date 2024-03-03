@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:deeznote/config/main_config.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 
@@ -14,7 +15,7 @@ class RsAPI {
   static final instance = RsAPI._();
 
   final Dio _dio = Dio(BaseOptions(
-      baseUrl: 'https://dev.tulen.id/api',
+      baseUrl: MainConfig().baseURL,
       connectTimeout: const Duration(seconds: 60),
       receiveTimeout: const Duration(seconds: 60),
       responseType: ResponseType.json));
@@ -128,7 +129,9 @@ class RsAPI {
     try {
       final res = await _dio.post(endpoint,
           options: Options(
-            headers: {'authorization': token, ...otherOptions!},
+            headers: {
+              'authorization': token,
+            },
             contentType: 'application/json',
           ),
           queryParameters: queryParameters,
@@ -137,7 +140,7 @@ class RsAPI {
           onReceiveProgress: onReceiveProgress,
           data: data);
       if (res.statusCode == 200 || res.statusCode == 201) {
-        return ResponseModel.fromJson(res.data['data']);
+        return ResponseModel.fromJson(res.data);
       }
       throw "something went wrong";
     } catch (e) {

@@ -11,7 +11,7 @@ import '../common/styles/color_scheme.dart';
 
 class MainConfig {
   /// DEFAULT VARIABLES
-  static String baseURL = 'https://103.134.154.129/';
+  String baseURL = 'https://backend-app-production-c962.up.railway.app';
   static GetStorage storage = GetStorage();
   static String kDefaultNetworkImagePlaceholder =
       'https://via.placeholder.com/150';
