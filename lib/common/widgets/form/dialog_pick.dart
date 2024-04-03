@@ -61,10 +61,11 @@ class _RsDialogPickState extends State<RsDialogPick> {
                       child: ListView(
                     children: universalController.staffData
                         .map((e) => RsCardStaff(
-                              image: e["photo"],
+                              image: e["profilePict"] ??
+                                  "https://via.placeholder.com/150",
                               isCheck: universalController.isSelected(e["id"]),
                               name: e["name"],
-                              role: e["position"],
+                              role: e['department']['departmentName'],
                               onTap: () {
                                 universalController.checkData(e["id"]);
                               },

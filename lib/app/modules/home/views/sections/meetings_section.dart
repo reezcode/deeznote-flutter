@@ -2,11 +2,13 @@
 import 'package:deeznote/app/modules/home/controllers/home_controller.dart';
 import 'package:deeznote/common/styles/rs_style_library.dart';
 import 'package:deeznote/common/utils/screen.dart';
+import 'package:deeznote/common/widgets/custom/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../../common/utils/format_date.dart';
 import '../../../../../common/widgets/prebuilt/rs_custom_v_card.dart';
 
 class MeetingSection extends StatefulWidget {
@@ -101,32 +103,38 @@ class _MeetingSectionState extends State<MeetingSection> {
                         ],
                       ),
                       padding: EdgeInsets.all(16.w),
-                      child: ListView.builder(
-                          controller: scrollController,
-                          itemCount: 3,
-                          itemBuilder: (context, index) {
-                            final meet = widget.controller.meetingList[index];
-                            if (index == 0) {
-                              return Center(
-                                child: Container(
-                                    width: 80.w,
-                                    height: 10.w,
-                                    margin: EdgeInsets.only(bottom: 16.h),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          RsColorScheme.grey.withOpacity(0.3),
-                                      borderRadius:
-                                          BorderRadius.circular(100.r),
-                                    )),
-                              );
-                            }
-                            return RsCardV1(
-                                dayLeft: meet["dayLeft"],
-                                title: meet["title"],
-                                date: meet["date"],
-                                time: meet["time"],
-                                client: meet["client"]);
-                          }));
+                      child: widget.controller.meetingList.isNotEmpty
+                          ? ListView.builder(
+                              controller: scrollController,
+                              itemCount: widget.controller.meetingList.length,
+                              itemBuilder: (context, index) {
+                                final meet =
+                                    widget.controller.meetingList[index];
+                                if (index == 0) {
+                                  return Center(
+                                    child: Container(
+                                        width: 80.w,
+                                        height: 10.w,
+                                        margin: EdgeInsets.only(bottom: 16.h),
+                                        decoration: BoxDecoration(
+                                          color: RsColorScheme.grey
+                                              .withOpacity(0.3),
+                                          borderRadius:
+                                              BorderRadius.circular(100.r),
+                                        )),
+                                  );
+                                }
+                                return RsCardV1(
+                                    dayLeft: differenceInDays(
+                                        meet['meetDate'], DateTime.now()),
+                                    id: meet['idMeet'],
+                                    title: meet['meetTitle'],
+                                    date:
+                                        formatDateTime(meet['meetDate'], false),
+                                    time: formatTime(meet['meetDate']),
+                                    client: meet['customerName']);
+                              })
+                          : const ListLongShimmer());
                 },
               )
             ],

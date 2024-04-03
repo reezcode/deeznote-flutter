@@ -14,6 +14,8 @@ class RsButton extends StatelessWidget {
     this.radius = 40,
     this.width = 200,
     this.margin = const EdgeInsets.all(0),
+    this.isDisabled,
+    this.disabledColor,
   });
 
   final Widget child;
@@ -21,6 +23,8 @@ class RsButton extends StatelessWidget {
   final Color buttonColor, splashColor;
   final double height, radius, width;
   final EdgeInsets margin;
+  final bool? isDisabled;
+  final Color? disabledColor;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,9 @@ class RsButton extends StatelessWidget {
       height: height.w,
       margin: margin,
       decoration: BoxDecoration(
-        color: buttonColor,
+        color: isDisabled ?? false
+            ? disabledColor ?? RsColorScheme.primaryDark
+            : buttonColor,
         borderRadius: BorderRadius.circular(radius),
       ),
       child: Material(

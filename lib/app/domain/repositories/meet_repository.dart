@@ -1,29 +1,47 @@
 abstract class MeetAbstractRepository {
-  Future<void> list({
-    String? date,
-    String? limit,
-    String? page,
-    required Function(List<dynamic>) callback,
+  Future<Map> create({
+    required String meetTitle,
+    String? meetLink,
+    required String meetDate,
+    required String officeId,
+    required int meetReminder,
+    required List involvedStaff,
+    required String customerName,
+    List? attachment,
   });
 
-  Future<void> detail({
-    required int id,
-    required Function(Map<String, dynamic> p1) callback,
+  Future<List> list({
+    String? search,
+    int? page,
+    int? limit,
+    String? sort,
+    String? sortBy,
+    String? startDate,
+    String? endDate,
   });
 
-  Future<void> create({
-    required Function(Map<String, dynamic> p1) callback,
-    required Map<String, dynamic> data,
+  Future<Map> show({
+    required String id,
   });
 
-  Future<void> update({
-    required int id,
-    required Function(Map<String, dynamic> p1) callback,
-    required Map<String, dynamic> data,
+  Future<Map> update({
+    required String id,
+    required String meetTitle,
+    String? meetLink,
+    required String meetDate,
+    required String officeId,
+    required int meetReminder,
+    required List involvedStaff,
+    required String customerName,
+    List? attachment,
   });
 
-  Future<void> delete({
-    required int id,
-    required Function(Map<String, dynamic> p1) callback,
+  Future<Map> delete({
+    required String id,
   });
+
+  Future<Map> dashboard(
+      {String? sort, String? sortBy, String? startDate, String? endDate});
+
+  Future<Map> finish({required String id});
 }

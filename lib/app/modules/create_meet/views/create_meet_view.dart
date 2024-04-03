@@ -1,8 +1,7 @@
 import 'package:deeznote/common/enums/form_type.dart';
-import 'package:deeznote/config/form_config.dart';
+import 'package:deeznote/common/widgets/custom/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
 
 import '../../../../common/styles/rs_style_library.dart';
@@ -14,19 +13,24 @@ class CreateMeetView extends GetView<CreateMeetController> {
   @override
   Widget build(BuildContext context) {
     return RsScaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.w),
-        child: ListView(
-          children: [
-            RsFormContainer(
-              action: FormAction.create,
-              config: FormConfig().createMeetForm,
-              buttonText: "Create",
-              icon: Icons.add_circle,
-              onCreate: controller.createMeet,
-            )
-          ],
-        ),
+      body: Obx(
+        () => controller.isLoading.value
+            ? const ListLongShimmer()
+            : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.w),
+                child: ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: [
+                    RsFormContainer(
+                      action: FormAction.create,
+                      config: controller.formConfig,
+                      buttonText: "Create",
+                      icon: Icons.add_circle,
+                      onCreate: controller.createMeet,
+                    )
+                  ],
+                ),
+              ),
       ),
       appbar: AppBar(
         shadowColor: Colors.transparent,

@@ -14,7 +14,7 @@ class MeetingSignView extends GetView<MeetingSignController> {
   const MeetingSignView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return RsScaffold(
+    return Obx(() => RsScaffold(
         useSafeArea: false,
         bgColor: RsColorScheme.primary,
         appbar: AppBar(
@@ -33,7 +33,8 @@ class MeetingSignView extends GetView<MeetingSignController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Please Sign Here",
+                "Please Sign Here\n${controller.signPerson}",
+                textAlign: TextAlign.center,
                 style: RsTextStyle.bold
                     .copyWith(fontSize: 21.sp, color: Colors.white),
               ),
@@ -70,6 +71,6 @@ class MeetingSignView extends GetView<MeetingSignController> {
               )
             ],
           ),
-        ));
+        )));
   }
 }

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:deeznote/app/data/sources/local/local_storage.dart';
 import 'package:deeznote/app/modules/home/controllers/home_controller.dart';
 import 'package:deeznote/common/extensions/gaps.dart';
 import 'package:deeznote/common/utils/screen.dart';
@@ -40,7 +41,7 @@ class ProfileSection extends StatelessWidget {
               ),
               8.gH,
               Text(
-                "Resma Adi Nugroho",
+                'user_detail'.load()['name'],
                 style: RsTextStyle.bold
                     .copyWith(fontSize: 18.sp, color: Colors.white),
               ),
@@ -62,6 +63,7 @@ class ProfileSection extends StatelessWidget {
                 (e) => RsCardSettingMenu(
                     icon: e['icon'],
                     title: e['title'],
+                    isEnabled: true,
                     description: e['description'],
                     onTap: e['onTap']),
               )

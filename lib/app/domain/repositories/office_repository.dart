@@ -1,4 +1,4 @@
-abstract class StaffAbstractRepository {
+abstract class OfficeRepositoryAbstract {
   Future<List> list({
     String? search,
     int? page,

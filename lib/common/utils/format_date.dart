@@ -13,7 +13,22 @@ String formatDateTime(String input, bool isTimeOnly) {
   String year = DateFormat.y().format(dateTime); // Tahun
   String time = DateFormat.Hm().format(dateTime); // Jam dan menit
   // Jam dan menit
-  String formattedDate = '$date $month $year ${isTimeOnly ? time : ''}';
+  String formattedDate =
+      '$date $month $year   ${isTimeOnly ? '$time WIB' : ''}';
 
   return formattedDate;
+}
+
+String formatTime(String input) {
+  DateTime dateTime = DateTime.parse(input).toLocal();
+  String time = DateFormat.Hm().format(dateTime); // Jam dan menit
+  return "$time WIB";
+}
+
+int differenceInDays(
+  String date2,
+  DateTime date1,
+) {
+  DateTime dateTime2 = DateTime.parse(date2);
+  return dateTime2.difference(date1).inDays;
 }

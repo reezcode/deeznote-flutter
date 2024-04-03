@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:deeznote/app/data/sources/local/local_storage.dart';
+import 'package:deeznote/app/data/sources/network/api/rs_core_api.dart';
 import 'package:deeznote/common/styles/rs_style_library.dart';
 import 'package:deeznote/common/utils/screen.dart';
 import 'package:deeznote/common/widgets/prebuilt/rs_photo_view.dart';
 import 'package:deeznote/common/widgets/rs_turing.dart';
+import 'package:deeznote/config/endpoints_config.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +21,7 @@ class UploadController extends GetxController {
   RxList<Widget> photoList = <Widget>[].obs;
   List<String> photoSourceList = [];
   List<dynamic> mappedPhoto = [];
+  List<String> listFile = [];
 
   String getImgUrl() {
     return imgrUrl['preview'];
@@ -38,8 +42,49 @@ class UploadController extends GetxController {
       file.value = fileNew;
       fileName.value = result.files.single.name;
 
-      /// UPLOAD TO API HERE
+      try {
+        isUploading.value = true;
+        final res = await RsAPI.instance.upload(
+            endpoint: Endpoint.upload,
+            file: fileNew,
+            token: 'Bearer ${'token'.load()}');
+        if (res.data != null) {
+          isUploading.value = false;
+          listFile.add(res.data.first['idFileContainer']);
+          RsToast.show("Success", "File uploaded successfully 🎉");
+        } else {
+          RsToast.show("Error", "Response data empty");
+        }
+      } catch (e) {
+        RsToast.show("Error", "$e");
+      }
     }
+  }
+
+  Future<String> uploadImage({
+    File? result,
+  }) async {
+    if (result != null) {
+      try {
+        isUploading.value = true;
+        final res = await RsAPI.instance.upload(
+            endpoint: Endpoint.upload,
+            file: result,
+            token: 'Bearer ${'token'.load()}');
+        if (res.data != null) {
+          isUploading.value = false;
+          RsToast.show("Success", "File uploaded successfully 🎉");
+          return res.data.first['fileLink'];
+        } else {
+          RsToast.show("Error", "Response data empty");
+          return "";
+        }
+      } catch (e) {
+        RsToast.show("Error", "$e");
+        return "";
+      }
+    }
+    return "";
   }
 
   Future getPhoto() async {
@@ -48,12 +93,14 @@ class UploadController extends GetxController {
       File imageFile = File(imagePicked!.path);
       try {
         isUploading.value = true;
-        final data = {};
-        // final data = await uploadFile(getStorage.read('token'), imageFile,
-        //     callback: (val) {});
-        if (data.isNotEmpty) {
+        // final data = {};
+        final res = await RsAPI.instance.upload(
+            endpoint: Endpoint.upload,
+            file: imageFile,
+            token: 'Bearer ${'token'.load()}');
+        if (res.data != null) {
           isUploading.value = false;
-          mappedPhoto.add({"img_photo": data});
+          mappedPhoto.add(res.data.first);
           int lastIndex = mappedPhoto.length - 1;
           photoSourceList.add(imagePicked.path);
           photoList.add(

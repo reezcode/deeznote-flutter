@@ -23,13 +23,13 @@ class AuthView extends GetView<AuthController> {
             child: Container(
               width: RsScreen.w * 0.75.w,
               height: RsScreen.w * 0.7.w,
-              margin: EdgeInsets.only(bottom: 300.w),
+              margin: EdgeInsets.only(bottom: 380.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
                     'assets/icons/ic_logo.png',
-                    width: 120.w,
+                    width: 100.w,
                   ),
                   10.gH,
                   Text(

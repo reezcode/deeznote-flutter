@@ -19,6 +19,20 @@ class MeetingNotesView extends GetView<MeetingNotesController> {
         shadowColor: Colors.transparent,
         centerTitle: false,
         titleSpacing: 0,
+        actions: [
+          Visibility(
+            visible: controller.args['status_code'] == 1,
+            child: IconButton(
+              onPressed: () {
+                controller.saveMeetingNotes();
+              },
+              icon: const Icon(
+                Icons.save,
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
         title: Text(
           "Meeting Notes",
           style:
@@ -34,7 +48,7 @@ class MeetingNotesView extends GetView<MeetingNotesController> {
               hint: "Type meeting notes here...",
             ),
             otherOptions: OtherOptions(
-              height: RsScreen.h * 0.85,
+              height: RsScreen.h * 0.80,
             ),
             htmlToolbarOptions: HtmlToolbarOptions(
                 toolbarPosition: ToolbarPosition.belowEditor),

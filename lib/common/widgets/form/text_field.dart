@@ -54,7 +54,7 @@ class _RsTextFieldState extends State<RsTextField> with RsValidationMixin {
               name: widget.name,
               style: RsTextStyle.regular,
               onChanged: widget.onChanged,
-              validator: widget.validator ?? validateUserName,
+              validator: widget.validator,
               cursorColor: RsColorScheme.primary,
               controller: widget.controller,
               decoration: RsInputDecoration.defaultDecoration(

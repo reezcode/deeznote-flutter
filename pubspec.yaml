@@ -37,6 +37,7 @@ dependencies:
   animate_do: ^3.3.3
   syncfusion_flutter_signaturepad: ^24.2.8
   html_editor_enhanced: ^2.5.1
+  url_launcher: ^6.0.3
   get: 4.6.6
   flutter:
     sdk: flutter

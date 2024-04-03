@@ -27,11 +27,11 @@ class UserRepository implements UserAbstractRepository {
       final res = await RsAPI.instance.post(
           endpoint: Endpoint.login,
           data: {"identifier": data['email'], "password": data['password']});
-      if (res.success) {
+      if (res.data != null) {
         res.data['token'].toString().save('token');
         (res.data as Map<String, dynamic>).save('user_detail');
-        callback(res.data);
         Get.offAllNamed(Routes.HOME, arguments: {});
+        callback(res.data);
         EasyLoading.dismiss();
       }
     } catch (e) {

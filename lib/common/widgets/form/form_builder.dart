@@ -1,14 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:deeznote/common/extensions/gaps.dart';
+import 'package:deeznote/common/widgets/form/dialog_pick.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'package:deeznote/common/extensions/gaps.dart';
-import 'package:deeznote/common/widgets/form/dialog_pick.dart';
-
-import '../../../app/data/models/form_model.dart';
 import '../../../app/data/models/response_model.dart';
 import '../../../config/main_config.dart';
 import '../../enums/form_type.dart';
@@ -140,7 +138,7 @@ class RsFormContainer extends StatefulWidget {
   final void Function(GlobalKey<FormBuilderState>)? onCreate;
   final void Function(GlobalKey<FormBuilderState>)? onUpdate;
   final void Function(GlobalKey<FormBuilderState>)? onRead;
-  final List<RsFormModel> config;
+  final List<dynamic> config;
   final String buttonText;
   final IconData? icon;
   const RsFormContainer({

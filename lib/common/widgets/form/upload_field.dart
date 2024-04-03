@@ -45,7 +45,7 @@ class _RsProfileUploadState extends State<RsProfileUpload> {
                     endpoint: Endpoint.upload,
                     file: imageFile,
                     mediaType: MediaType.parse('image/jpeg'));
-                if (res.success) {
+                if (res.status == 200) {
                   EasyLoading.dismiss();
                   widget.controller.text = res.data!['preview'];
                   controller.imgrUrl.value = res.data!;

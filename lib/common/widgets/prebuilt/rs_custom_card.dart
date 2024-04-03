@@ -267,12 +267,14 @@ class RsCardSettingMenu extends StatelessWidget {
   final String title;
   final String description;
   final Function() onTap;
+  final bool isEnabled;
   const RsCardSettingMenu({
     Key? key,
     required this.icon,
     required this.title,
     required this.description,
     required this.onTap,
+    required this.isEnabled,
   }) : super(key: key);
 
   @override
@@ -284,6 +286,8 @@ class RsCardSettingMenu extends StatelessWidget {
         splashColor: RsColorScheme.secondary,
         height: 60.w,
         margin: EdgeInsets.only(bottom: 16.w),
+        isDisabled: !isEnabled,
+        disabledColor: RsColorScheme.grey.withOpacity(0.2),
         onTap: onTap,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -291,7 +295,7 @@ class RsCardSettingMenu extends StatelessWidget {
             Icon(
               icon,
               size: 24.w,
-              color: RsColorScheme.primary,
+              color: isEnabled ? RsColorScheme.primary : RsColorScheme.grey,
             ),
             8.gW,
             Column(
@@ -300,14 +304,19 @@ class RsCardSettingMenu extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: RsTextStyle.bold
-                      .copyWith(fontSize: 14.sp, color: RsColorScheme.primary),
+                  style: RsTextStyle.bold.copyWith(
+                      fontSize: 14.sp,
+                      color: isEnabled
+                          ? RsColorScheme.primary
+                          : RsColorScheme.grey),
                 ),
                 Text(
                   description,
                   style: RsTextStyle.medium.copyWith(
                       fontSize: 12.sp,
-                      color: RsColorScheme.text.withOpacity(0.8)),
+                      color: isEnabled
+                          ? RsColorScheme.text.withOpacity(0.8)
+                          : RsColorScheme.grey.withOpacity(0.4)),
                 ),
               ],
             ),
@@ -315,7 +324,7 @@ class RsCardSettingMenu extends StatelessWidget {
             Icon(
               Icons.arrow_forward_ios_rounded,
               size: 18.w,
-              color: RsColorScheme.primary,
+              color: isEnabled ? RsColorScheme.primary : RsColorScheme.grey,
             )
           ],
         ));
@@ -393,23 +402,40 @@ class RsCardStaff extends StatelessWidget {
   }
 }
 
-class RsCardListDetail extends StatelessWidget {
+class RsCardListDetail extends StatefulWidget {
   final IconData icon;
   final String title;
   final String description;
+  final String type;
   final Function()? onTap;
   const RsCardListDetail({
     Key? key,
     required this.icon,
     required this.title,
     required this.description,
+    required this.type,
     this.onTap,
   }) : super(key: key);
 
   @override
+  State<RsCardListDetail> createState() => _RsCardListDetailState();
+}
+
+class _RsCardListDetailState extends State<RsCardListDetail> {
+  bool isUrl = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    if (widget.type == "url") {
+      isUrl = true;
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         width: RsScreen.w,
         padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 8.h),
@@ -420,7 +446,7 @@ class RsCardListDetail extends StatelessWidget {
         child: Row(
           children: [
             Icon(
-              icon,
+              widget.icon,
               color: RsColorScheme.primary,
               size: 24.w,
             ),
@@ -429,13 +455,13 @@ class RsCardListDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  widget.title,
                   style: RsTextStyle.bold
                       .copyWith(fontSize: 14.sp, color: RsColorScheme.text),
                 ),
                 4.gH,
                 Text(
-                  description,
+                  widget.description,
                   style: RsTextStyle.medium
                       .copyWith(fontSize: 12.sp, color: RsColorScheme.text),
                 ),

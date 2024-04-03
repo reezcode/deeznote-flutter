@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:deeznote/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:deeznote/common/extensions/gaps.dart';
 import 'package:get/get.dart';
+
+import 'package:deeznote/app/routes/app_pages.dart';
+import 'package:deeznote/common/extensions/gaps.dart';
 
 import '../../styles/rs_style_library.dart';
 import '../../utils/screen.dart';
@@ -16,6 +16,7 @@ class RsCardV1 extends StatelessWidget {
   final String date;
   final String time;
   final String client;
+  final String id;
   const RsCardV1({
     Key? key,
     required this.dayLeft,
@@ -23,13 +24,14 @@ class RsCardV1 extends StatelessWidget {
     required this.date,
     required this.time,
     required this.client,
+    required this.id,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.DETAIL_MEET);
+        Get.toNamed(Routes.DETAIL_MEET, arguments: {'id': id});
       },
       child: RsCard(
           width: RsScreen.w,
@@ -71,6 +73,8 @@ class RsCardV1 extends StatelessWidget {
               ),
               Text(
                 title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: RsTextStyle.bold.copyWith(fontSize: 14.sp),
               ),
               8.gH,

@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
@@ -41,87 +40,6 @@ class FormConfig with RsValidationMixin {
   // List<RsFormModel> profileForm = [
   //   RsFormModel(formType: Form, name: name, controller: controller)
   // ];
-
-  List<RsFormModel> createMeetForm = [
-    RsFormModel(
-      formType: FormType.text,
-      name: "meet_name",
-      controller: TextEditingController(),
-      label: "Meeting Name",
-      hint: "Enter meeting name",
-      icon: Icons.video_call_rounded,
-    ),
-    RsFormModel(
-      formType: FormType.date,
-      name: "date",
-      controller: TextEditingController(),
-      label: "Date",
-      hint: "Enter meeting date",
-      icon: Icons.date_range_rounded,
-    ),
-    RsFormModel(
-      formType: FormType.text,
-      name: "customer_name",
-      controller: TextEditingController(),
-      label: "Customer Name",
-      hint: "Enter customer name",
-      icon: Icons.person_rounded,
-    ),
-    RsFormModel(
-      formType: FormType.dropdown,
-      dataDropdown: [
-        {"value": "1", "label": "Kantor Utama"},
-        {"value": "2", "label": "Kantor Cabang"}
-      ],
-      valueField: "value",
-      textField: "label",
-      name: "office_location",
-      controller: TextEditingController(),
-      label: "Office Location",
-      hint: "Choose office location",
-      icon: Icons.location_city_rounded,
-    ),
-    RsFormModel(
-      formType: FormType.dialogPick,
-      name: "involved_staff",
-      controller: TextEditingController(),
-      label: "Involved Staff",
-      hint: "Enter Involved Staff",
-      icon: Icons.people_alt_rounded,
-    ),
-    RsFormModel(
-      formType: FormType.upload,
-      name: "upload",
-      controller: TextEditingController(),
-      label: "File Attachment",
-      hint: "Upload file attachment here",
-      icon: Icons.upload_file_rounded,
-      fileType: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'],
-    ),
-    RsFormModel(
-      formType: FormType.text,
-      name: "meet_link",
-      controller: TextEditingController(),
-      label: "Meeting Link",
-      hint: "Enter meeting link",
-      icon: Icons.link,
-    ),
-    RsFormModel(
-      formType: FormType.dropdown,
-      dataDropdown: [
-        {"value": "1", "label": "H-10"},
-        {"value": "2", "label": "H-5"}
-      ],
-      valueField: "value",
-      textField: "label",
-      name: "meet_reminder",
-      controller: TextEditingController(),
-      label: "Meeting Reminder",
-      hint: "Choose meeting reminder",
-      icon: Icons.location_city_rounded,
-    ),
-  ];
 
   List<RsFormModel> updatePasswordForm = [
     RsFormModel(

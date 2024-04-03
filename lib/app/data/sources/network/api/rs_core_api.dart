@@ -1,14 +1,14 @@
 import 'dart:io';
 
+import 'package:deeznote/common/utils/file.dart';
+import 'package:deeznote/common/widgets/rs_turing.dart';
 import 'package:deeznote/config/main_config.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../models/response_model.dart';
 
-/// Risen Core API
-///
-/// This class is used to call API from Risen Core
 class RsAPI {
   RsAPI._();
 
@@ -36,7 +36,10 @@ class RsAPI {
     try {
       final res = await _dio.get(endpoint,
           options: Options(
-            headers: {'authorization': token, ...otherOptions!},
+            headers: {
+              'authorization': token,
+              if (otherOptions != null) ...otherOptions
+            },
             contentType: 'application/json',
           ),
           queryParameters: {'page': page, 'limit': limit, ...extraParam!},
@@ -65,9 +68,12 @@ class RsAPI {
       ProgressCallback? onSendProgress,
       ProgressCallback? onReceiveProgress}) async {
     try {
-      final res = await _dio.get('$endpoint/$id',
+      final res = await _dio.get('$endpoint/$id/show',
           options: Options(
-            headers: {'authorization': token, ...otherOptions!},
+            headers: {
+              'authorization': token,
+              if (otherOptions != null) ...otherOptions
+            },
             contentType: 'application/json',
           ),
           queryParameters: queryParameters,
@@ -75,7 +81,7 @@ class RsAPI {
           onReceiveProgress: onReceiveProgress,
           data: data);
       if (res.statusCode == 200 || res.statusCode == 201) {
-        return ResponseModel.fromJson(res.data['data']);
+        return ResponseModel.fromJson(res.data);
       }
       throw "something went wrong";
     } catch (e) {
@@ -96,7 +102,10 @@ class RsAPI {
     try {
       final res = await _dio.get(endpoint,
           options: Options(
-            headers: {'authorization': token, ...otherOptions!},
+            headers: {
+              'authorization': token,
+              if (otherOptions != null) ...otherOptions
+            },
             contentType: 'application/json',
           ),
           queryParameters: queryParameters,
@@ -104,11 +113,65 @@ class RsAPI {
           onReceiveProgress: onReceiveProgress,
           data: data);
       if (res.statusCode == 200 || res.statusCode == 201) {
-        return ResponseModel.fromJson(res.data['data']);
+        return ResponseModel.fromJson(res.data);
       }
       throw "something went wrong";
     } catch (e) {
       rethrow;
+    }
+  }
+
+  /// Normal get data from API with return data type Map<String, dynamic>
+  // Future<dynamic> download(
+  //     {required String endpoint,
+  //     Map<String, dynamic>? data,
+  //     String? token,
+  //     Map<String, dynamic>? otherOptions,
+  //     Map<String, dynamic>? queryParameters,
+  //     CancelToken? cancelToken,
+  //     ProgressCallback? onSendProgress,
+  //     ProgressCallback? onReceiveProgress}) async {
+  //   try {
+  //     final savePath = await FileHelper().getDownloadPath();
+  //     final res = await _dio.download(endpoint, savePath,
+  //         options: Options(
+  //           headers: {
+  //             'authorization': token,
+  //             if (otherOptions != null) ...otherOptions
+  //           },
+  //         ));
+  //     if (res.statusCode == 200 || res.statusCode == 201) {
+  //       return savePath;
+  //     }
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+  Future<void> download({
+    required String url,
+    required String jwtToken,
+  }) async {
+    Dio dio = Dio();
+    dio.options.headers['Authorization'] = 'Bearer $jwtToken';
+
+    try {
+      Directory? downloadsDirectory = await getExternalStorageDirectory();
+      if (downloadsDirectory == null) {
+        throw FileSystemException('Failed to get downloads directory.');
+      }
+      String fileName = url.split('/').last;
+      String? savePath = await FileHelper().getDownloadPath();
+      savePath = '$savePath/$fileName.pdf';
+      Response response = await dio.download(url, savePath,
+          onReceiveProgress: (received, total) {
+        if (total != -1) {
+          print('Received: ${received / total * 100}%');
+        }
+      });
+      RsToast.show(
+          'Success', 'File downloaded successfully in Downloads folder.');
+    } catch (error) {
+      print('Failed to download file: $error');
     }
   }
 
@@ -154,7 +217,7 @@ class RsAPI {
   Future<ResponseModel> upload(
       {required String endpoint,
       required File file,
-      required MediaType mediaType,
+      MediaType? mediaType,
       String? token,
       Map<String, dynamic>? otherOptions,
       Map<String, dynamic>? queryParameters,
@@ -173,7 +236,10 @@ class RsAPI {
       ));
       final res = await _dio.post(endpoint,
           options: Options(
-            headers: {'authorization': token, ...otherOptions!},
+            headers: {
+              'authorization': token,
+              if (otherOptions != null) ...otherOptions
+            },
             contentType: 'application/json',
           ),
           queryParameters: queryParameters,
@@ -182,7 +248,7 @@ class RsAPI {
           onReceiveProgress: onReceiveProgress,
           data: data);
       if (res.statusCode == 200 || res.statusCode == 201) {
-        return ResponseModel.fromJson(res.data['data']);
+        return ResponseModel.fromJson(res.data);
       }
       throw "something went wrong";
     } catch (e) {
@@ -207,7 +273,10 @@ class RsAPI {
     try {
       final res = await _dio.put('$endpoint/$id',
           options: Options(
-            headers: {'authorization': token, ...otherOptions!},
+            headers: {
+              'authorization': token,
+              if (otherOptions != null) ...otherOptions
+            },
             contentType: 'application/json',
           ),
           queryParameters: queryParameters,
@@ -240,7 +309,10 @@ class RsAPI {
     try {
       final res = await _dio.patch('$endpoint/$id',
           options: Options(
-            headers: {'authorization': token, ...otherOptions!},
+            headers: {
+              'authorization': token,
+              if (otherOptions != null) ...otherOptions
+            },
             contentType: 'application/json',
           ),
           queryParameters: queryParameters,
@@ -248,7 +320,7 @@ class RsAPI {
           onReceiveProgress: onReceiveProgress,
           data: data);
       if (res.statusCode == 200 || res.statusCode == 201) {
-        return ResponseModel.fromJson(res.data['data']);
+        return ResponseModel.fromJson(res.data);
       }
       throw "something went wrong";
     } catch (e) {
@@ -272,7 +344,10 @@ class RsAPI {
     try {
       final res = await _dio.patch('$endpoint/$id',
           options: Options(
-            headers: {'authorization': token, ...otherOptions!},
+            headers: {
+              'authorization': token,
+              if (otherOptions != null) ...otherOptions
+            },
             contentType: 'application/json',
           ),
           queryParameters: queryParameters,

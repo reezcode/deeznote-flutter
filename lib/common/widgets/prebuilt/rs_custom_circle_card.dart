@@ -22,8 +22,8 @@ class RsCirclePict extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100.w),
           image: DecorationImage(
-              image:
-                  AssetImage(image ?? 'assets/images/img_profile_photo.png'))),
+              image: NetworkImage(image ?? 'https://via.placeholder.com/150'),
+              fit: BoxFit.cover)),
     );
   }
 }

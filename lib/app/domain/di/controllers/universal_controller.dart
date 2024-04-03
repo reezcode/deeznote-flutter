@@ -13,7 +13,7 @@ class UniversalController extends GetxController with RsValidationMixin {
   RxList selectedData = [].obs;
   RxList staffData = [].obs;
   RxString selectedStaff = "Choose Staff Here...".obs;
-  RxString selectedStaffImage = "assets/images/img_photo_default.png".obs;
+  RxString selectedStaffImage = "https://via.placeholder.com/150".obs;
   final loginFormKey = GlobalKey<FormBuilderState>();
 
   // Halting Condition
@@ -21,7 +21,7 @@ class UniversalController extends GetxController with RsValidationMixin {
 
   @override
   void onInit() {
-    fillStaffData();
+    // fillStaffData();
     super.onInit();
   }
 
@@ -53,7 +53,7 @@ class UniversalController extends GetxController with RsValidationMixin {
         false;
   }
 
-  void checkData(int id) {
+  void checkData(String id) {
     if (selectedData.contains(id)) {
       selectedData.remove(id);
     } else {
@@ -62,19 +62,19 @@ class UniversalController extends GetxController with RsValidationMixin {
 
     if (selectedData.isEmpty) {
       selectedStaff.value = "Choose Staff Here...";
-      selectedStaffImage.value = "assets/images/img_photo_default.png";
+      selectedStaffImage.value = "https://via.placeholder.com/150";
     } else {
       String selectedNames = "";
-      selectedNames = staffData
-          .firstWhere((element) => element["id"] == selectedData.first)["name"];
+      selectedNames = staffData.firstWhere(
+          (element) => element["id"].toString() == selectedData.first)["name"];
 
       selectedStaff.value = selectedData.length == 1
-          ? staffData.firstWhere(
-              (element) => element["id"] == selectedData.first)["name"]
+          ? staffData.firstWhere((element) =>
+              element["id"].toString() == selectedData.first)["name"]
           : "$selectedNames and ${selectedData.length - 1} others";
 
-      selectedStaffImage.value = staffData.firstWhere(
-          (element) => element["id"] == selectedData.first)["photo"];
+      selectedStaffImage.value = staffData.firstWhere((element) =>
+          element["id"].toString() == selectedData.first)["profilePict"];
     }
   }
 
@@ -107,7 +107,7 @@ class UniversalController extends GetxController with RsValidationMixin {
     }
   }
 
-  bool isSelected(int id) {
+  bool isSelected(String id) {
     return selectedData.contains(id);
   }
 

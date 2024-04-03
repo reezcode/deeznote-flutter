@@ -1,10 +1,10 @@
 import 'package:deeznote/app/data/sources/local/local_storage.dart';
 import 'package:deeznote/app/data/sources/network/api/interceptor.dart';
 import 'package:deeznote/app/data/sources/network/api/rs_core_api.dart';
-import 'package:deeznote/app/domain/repositories/staff_repository.dart';
+import 'package:deeznote/app/domain/repositories/office_repository.dart';
 import 'package:deeznote/config/endpoints_config.dart';
 
-class StaffRepository implements StaffAbstractRepository {
+class OfficeRepository extends OfficeRepositoryAbstract {
   @override
   Future<List> list(
       {String? search,
@@ -14,7 +14,7 @@ class StaffRepository implements StaffAbstractRepository {
       String? sortBy}) async {
     try {
       final res = await RsAPI.instance.get(
-          endpoint: Endpoint.staffList,
+          endpoint: Endpoint.officeLocationList,
           queryParameters: {
             'search': search,
             'page': page,
