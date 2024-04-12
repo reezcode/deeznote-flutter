@@ -52,3 +52,27 @@ class CardBlank extends StatelessWidget {
     );
   }
 }
+
+class EmptyMeetings extends StatelessWidget {
+  const EmptyMeetings({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Container(
+      width: RsScreen.w * 0.8,
+      height: 70.w,
+      decoration: BoxDecoration(
+        color: RsColorScheme.grey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(5.r),
+      ),
+      child: Center(
+        child: Text(
+          "Touch grass 🍃, \nthere is no meeting today",
+          textAlign: TextAlign.center,
+          style: RsTextStyle.regular.copyWith(color: RsColorScheme.grey),
+        ),
+      ),
+    ));
+  }
+}

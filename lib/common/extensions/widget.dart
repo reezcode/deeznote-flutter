@@ -9,7 +9,13 @@ extension RsLoader on Widget {
 }
 
 extension RsLoader2 on List<Widget> {
-  List<Widget> loader(bool loading) {
-    return !loading ? this : [const ListLongShimmer()];
+  List<Widget> loader({required bool loading, int? count}) {
+    return !loading
+        ? this
+        : [
+            ListLongShimmer(
+              count: count,
+            )
+          ];
   }
 }

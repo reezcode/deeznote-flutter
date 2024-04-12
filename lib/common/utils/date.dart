@@ -12,4 +12,10 @@ class DateHelper {
   DateTime stringToDate(String date) {
     return DateTime.parse(date);
   }
+
+  bool isMeetCanStart(String date) {
+    DateTime now = DateTime.now();
+    DateTime meetDate = DateHelper().stringToDate(date);
+    return now.isAfter(meetDate.subtract(const Duration(minutes: 15)));
+  }
 }

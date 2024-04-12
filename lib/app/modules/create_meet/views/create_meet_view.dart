@@ -15,7 +15,10 @@ class CreateMeetView extends GetView<CreateMeetController> {
     return RsScaffold(
       body: Obx(
         () => controller.isLoading.value
-            ? const ListLongShimmer()
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: const ListLongShimmer(),
+              )
             : Padding(
                 padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.w),
                 child: ListView(
@@ -24,9 +27,13 @@ class CreateMeetView extends GetView<CreateMeetController> {
                     RsFormContainer(
                       action: FormAction.create,
                       config: controller.formConfig,
-                      buttonText: "Create",
-                      icon: Icons.add_circle,
-                      onCreate: controller.createMeet,
+                      buttonText: controller.args['type'] == FormAction.create
+                          ? "Create"
+                          : "Update",
+                      icon: controller.args['type'] == FormAction.create
+                          ? Icons.add_circle
+                          : Icons.save,
+                      onCreate: controller.cuMeet,
                     )
                   ],
                 ),
@@ -37,7 +44,9 @@ class CreateMeetView extends GetView<CreateMeetController> {
         centerTitle: false,
         titleSpacing: 0,
         title: Text(
-          "Create Meeting",
+          controller.args['type'] == FormAction.create
+              ? "Create Meeting"
+              : "Edit Meeting",
           style:
               RsTextStyle.bold.copyWith(color: Colors.white, fontSize: 18.sp),
         ),

@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:deeznote/common/extensions/gaps.dart';
-import 'package:deeznote/common/widgets/form/dialog_pick.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
+import 'package:deeznote/common/extensions/gaps.dart';
+import 'package:deeznote/common/widgets/form/dialog_pick.dart';
 
 import '../../../app/data/models/response_model.dart';
 import '../../../config/main_config.dart';
@@ -34,6 +35,7 @@ class RsFormBuilder extends StatelessWidget {
   final Future<ResponseModel>? futureDataDropdown;
   final FileType? fileType;
   final List<String>? allowedExtensions;
+  final DateTime? initDateValue;
   const RsFormBuilder({
     Key? key,
     required this.formType,
@@ -54,6 +56,7 @@ class RsFormBuilder extends StatelessWidget {
     this.futureDataDropdown,
     this.fileType,
     this.allowedExtensions,
+    this.initDateValue,
   }) : super(key: key);
 
   @override
@@ -114,7 +117,7 @@ class RsFormBuilder extends StatelessWidget {
       );
     } else if (formType == FormType.date) {
       return RsDatePicker(
-        controller: controller,
+        initDateValue: initDateValue,
         hint: hint,
         label: label,
         name: name,
@@ -133,7 +136,6 @@ class RsFormBuilder extends StatelessWidget {
 class RsFormContainer extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
-
   final FormAction action;
   final void Function(GlobalKey<FormBuilderState>)? onCreate;
   final void Function(GlobalKey<FormBuilderState>)? onUpdate;
@@ -194,6 +196,7 @@ class _RsFormContainerState extends State<RsFormContainer>
                         .universalController.togglePasswordVisibility2,
                     textField: e.textField,
                     valueField: e.valueField,
+                    initDateValue: e.initDateValue,
                   )),
               RsButton(
                   radius: 12.w,

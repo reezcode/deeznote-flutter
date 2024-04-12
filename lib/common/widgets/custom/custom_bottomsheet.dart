@@ -8,17 +8,20 @@ class RsBottomSheet extends StatelessWidget {
   final List<Widget> children;
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
+  final double? height;
   const RsBottomSheet({
     Key? key,
     required this.children,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.height,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: RsScreen.w,
+      height: height,
       padding: const EdgeInsets.all(35),
       decoration: BoxDecoration(
         color: Colors.white,

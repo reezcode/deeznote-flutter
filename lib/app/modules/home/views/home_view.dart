@@ -10,7 +10,6 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    controller.onInit();
     return Obx(() => RsScaffold(
           body: controller.pages[controller.selectedIndex]!,
           appbar: AppBar(

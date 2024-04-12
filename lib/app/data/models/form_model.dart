@@ -23,6 +23,7 @@ class RsFormModel {
       this.futureDataDropdown,
       this.validator,
       this.allowedExtensions,
+      this.initDateValue,
       this.fileType});
 
   FormType formType;
@@ -43,6 +44,7 @@ class RsFormModel {
   Future<ResponseModel>? futureDataDropdown;
   FileType? fileType;
   List<String>? allowedExtensions;
+  DateTime? initDateValue;
 
   RsFormModel copyWith({
     FormType? formType,

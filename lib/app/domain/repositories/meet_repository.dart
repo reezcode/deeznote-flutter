@@ -36,7 +36,7 @@ abstract class MeetAbstractRepository {
     List? attachment,
   });
 
-  Future<Map> delete({
+  Future<int?> delete({
     required String id,
   });
 

@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:deeznote/app/routes/app_pages.dart';
+import 'package:deeznote/common/extensions/gaps.dart';
+import 'package:deeznote/common/utils/format_date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import 'package:deeznote/app/routes/app_pages.dart';
-import 'package:deeznote/common/extensions/gaps.dart';
 
 import '../../styles/rs_style_library.dart';
 import '../../utils/screen.dart';
@@ -17,6 +17,8 @@ class RsCardV1 extends StatelessWidget {
   final String time;
   final String client;
   final String id;
+  final int statusCode;
+  final String rawDate;
   const RsCardV1({
     Key? key,
     required this.dayLeft,
@@ -25,6 +27,8 @@ class RsCardV1 extends StatelessWidget {
     required this.time,
     required this.client,
     required this.id,
+    required this.statusCode,
+    required this.rawDate,
   }) : super(key: key);
 
   @override
@@ -49,7 +53,11 @@ class RsCardV1 extends StatelessWidget {
                           ? Colors.red
                           : (dayLeft == 1)
                               ? RsColorScheme.tertiary
-                              : RsColorScheme.primary,
+                              : dayLeft < 0 && statusCode < 2
+                                  ? RsColorScheme.grey
+                                  : dayLeft < 0 && statusCode == 2
+                                      ? RsColorScheme.success
+                                      : RsColorScheme.primary,
                       label: Row(
                         children: [
                           Icon(
@@ -59,11 +67,7 @@ class RsCardV1 extends StatelessWidget {
                           ),
                           4.gW,
                           Text(
-                            (dayLeft == 0)
-                                ? "Today"
-                                : (dayLeft == 1)
-                                    ? "Tomorrow"
-                                    : "$dayLeft day left",
+                            getStatusText(dayLeft, rawDate, statusCode),
                             style: RsTextStyle.semiBold
                                 .copyWith(fontSize: 12.sp, color: Colors.white),
                           )

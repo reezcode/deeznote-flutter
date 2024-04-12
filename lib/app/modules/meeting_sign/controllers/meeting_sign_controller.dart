@@ -4,7 +4,6 @@ import 'dart:ui' as ui;
 import 'package:deeznote/app/domain/di/controllers/upload_controller.dart';
 import 'package:deeznote/app/domain/impl/notulensi_impl.dart';
 import 'package:deeznote/app/modules/detail_meet/controllers/detail_meet_controller.dart';
-import 'package:deeznote/app/routes/app_pages.dart';
 import 'package:deeznote/common/extensions/gaps.dart';
 import 'package:deeznote/common/utils/file.dart';
 import 'package:flutter/material.dart';
@@ -125,10 +124,9 @@ class MeetingSignController extends GetxController {
                           .then((value) {
                         if (value.isNotEmpty) {
                           EasyLoading.dismiss();
-                          Get.offNamedUntil(Routes.DETAIL_MEET,
-                              ModalRoute.withName(Routes.HOME),
-                              arguments: {'id': args['meetId']});
                           RsToast.show("Success", "Sign has been saved");
+                          Get.back();
+                          Get.back();
                           detailMeetController.getDetailMeet();
                         } else {
                           EasyLoading.dismiss();

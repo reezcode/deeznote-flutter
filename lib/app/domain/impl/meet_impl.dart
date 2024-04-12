@@ -79,17 +79,17 @@ class MeetRepository implements MeetAbstractRepository {
   }
 
   @override
-  Future<Map> delete({required String id}) async {
+  Future<int?> delete({required String id}) async {
     try {
       final res = await RsAPI.instance.delete(
           endpoint: Endpoint.deleteMeet,
           id: id,
           token: 'Bearer ${'token'.load()}');
-      if (res.data != null) return res.data;
+      if (res.status == 200) return res.status;
     } catch (e) {
       RsInterceptor.show(e);
     }
-    return {};
+    return 400;
   }
 
   @override

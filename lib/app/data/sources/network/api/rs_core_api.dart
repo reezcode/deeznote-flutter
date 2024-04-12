@@ -342,7 +342,7 @@ class RsAPI {
       ProgressCallback? onSendProgress,
       ProgressCallback? onReceiveProgress}) async {
     try {
-      final res = await _dio.patch('$endpoint/$id',
+      final res = await _dio.delete('$endpoint/$id',
           options: Options(
             headers: {
               'authorization': token,
@@ -352,10 +352,9 @@ class RsAPI {
           ),
           queryParameters: queryParameters,
           cancelToken: cancelToken,
-          onReceiveProgress: onReceiveProgress,
           data: data);
       if (res.statusCode == 200 || res.statusCode == 201) {
-        return ResponseModel.fromJson(res.data['data']);
+        return ResponseModel.fromJson(res.data);
       }
       throw "something went wrong";
     } catch (e) {

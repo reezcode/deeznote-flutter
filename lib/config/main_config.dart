@@ -77,13 +77,5 @@ class MainConfig {
         Get.toNamed(Routes.UPDATE_PASSWORD);
       }
     },
-    {
-      'icon': Icons.help_rounded,
-      'title': 'Help & Support',
-      'description': 'Get help and support',
-      'onTap': () {
-        Get.toNamed(Routes.HELP_SUPPORT);
-      }
-    }
   ];
 }

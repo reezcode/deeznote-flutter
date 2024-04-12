@@ -1,4 +1,4 @@
-package com.example.deeznote
+package com.desnet.notulensi
 
 import io.flutter.embedding.android.FlutterActivity
 

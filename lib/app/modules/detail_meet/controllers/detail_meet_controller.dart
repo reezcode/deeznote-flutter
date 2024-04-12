@@ -3,12 +3,14 @@ import 'package:deeznote/app/routes/app_pages.dart';
 import 'package:deeznote/common/extensions/gaps.dart';
 import 'package:deeznote/common/utils/core.dart';
 import 'package:deeznote/common/utils/date.dart';
+import 'package:deeznote/common/widgets/custom/custom_dialog.dart';
 import 'package:deeznote/common/widgets/rs_turing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../common/enums/form_type.dart';
 import '../../../../common/styles/rs_style_library.dart';
 import '../../../../common/utils/screen.dart';
 import '../../../domain/impl/meet_impl.dart';
@@ -20,7 +22,7 @@ class DetailMeetController extends GetxController {
   RxBool isLoading = true.obs;
   RxBool isCanStartMeet = false.obs;
   RxBool isNotulensiExist = false.obs;
-  RxBool isSigned = true.obs;
+  RxBool isSigned = false.obs;
   RxInt statusCode = 0.obs;
   final args = Get.arguments;
 
@@ -46,8 +48,7 @@ class DetailMeetController extends GetxController {
     isLoading.value = true;
     meetData.value = await MeetRepository().show(id: args['id']);
     statusCode.value = meetData['status_code'];
-    isCanStartMeet.value = DateHelper().isGreater(
-        DateTime.now(), DateHelper().stringToDate(meetData['meetDate']));
+    isCanStartMeet.value = DateHelper().isMeetCanStart(meetData['meetDate']);
     isNotulensiExist.value = meetData['notulensi'].isNotEmpty;
     if (meetData['notulensi'].isNotEmpty) {
       final res = await NotulensiRepository()
@@ -217,7 +218,7 @@ class DetailMeetController extends GetxController {
         'icon': Icons.draw_rounded,
         'title': 'Meeting Sign',
         'description': "Add or view meeting sign",
-        'isEnabled': !isSigned.value,
+        'isEnabled': isNotulensiExist.value && !isSigned.value,
         'onTap': () {
           if (isNotulensiExist.value && !isSigned.value) {
             Get.toNamed(Routes.MEETING_SIGN, arguments: {
@@ -273,104 +274,150 @@ class DetailMeetController extends GetxController {
   }
 
   void editMeet() {
-    Get.toNamed(Routes.CREATE_MEET);
+    Get.toNamed(Routes.CREATE_MEET,
+        arguments: {'data': meetData, 'type': FormAction.update});
   }
 
   void deleteMeet() {
-    Get.dialog(
-      AlertDialog(
-        title: Text("Delete Meet"),
-        content: Text("Are you sure want to delete this meet?"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Get.back();
-            },
-            child: Text("Cancel"),
-          ),
-          TextButton(
-            onPressed: () {
-              Get.offAllNamed(Routes.HOME);
-            },
-            child: Text("Delete"),
-          ),
+    RsDialog.show(height: RsScreen.h * 0.35, children: [
+      Text("Delete this meeting",
+          textAlign: TextAlign.center,
+          style: RsTextStyle.extraBold.copyWith(fontSize: 16.sp)),
+      16.gH,
+      const Divider(
+        color: RsColorScheme.grey,
+      ),
+      4.gH,
+      Icon(
+        Icons.warning_rounded,
+        color: RsColorScheme.danger,
+        size: 50.w,
+      ),
+      8.gH,
+      Text(
+        "Are you sure want to delete this meeting?\nAfter meeting deleted you can't undone this changes.",
+        textAlign: TextAlign.center,
+        style: RsTextStyle.regular
+            .copyWith(fontSize: 12.sp, color: RsColorScheme.text),
+      ),
+      16.gH,
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RsButton(
+              width: RsScreen.w * 0.3,
+              radius: 10.r,
+              buttonColor: RsColorScheme.primaryLight,
+              splashColor: RsColorScheme.grey,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Cancel",
+                    style:
+                        RsTextStyle.bold.copyWith(color: RsColorScheme.primary),
+                  ),
+                  8.gW,
+                  Icon(
+                    Icons.arrow_back_rounded,
+                    color: RsColorScheme.primary,
+                    size: 18.w,
+                  ),
+                ],
+              ),
+              onTap: () => Get.back()),
+          16.gW,
+          RsButton(
+              width: RsScreen.w * 0.3,
+              radius: 10.r,
+              buttonColor: RsColorScheme.danger,
+              splashColor: RsColorScheme.secondary,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Delete",
+                    style: RsTextStyle.bold.copyWith(color: Colors.white),
+                  ),
+                  8.gW,
+                  Icon(
+                    Icons.delete_forever,
+                    color: Colors.white,
+                    size: 18.w,
+                  ),
+                ],
+              ),
+              onTap: () async {
+                await EasyLoading.show();
+                final res = await MeetRepository().delete(id: args['id']);
+                if (res == 200) {
+                  await EasyLoading.dismiss();
+                  Get.back();
+                  Get.back();
+                  RsToast.show("Success", "Meeting deleted");
+                }
+              }),
         ],
       ),
-    );
+      8.gH,
+    ]);
   }
 
   void finishMeet() {
-    Get.dialog(
-      barrierDismissible: true,
-      useSafeArea: true,
-      Center(
-        child: Container(
-          width: 300.w,
-          height: 270,
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.w),
-          ),
-          child: Column(
+    RsDialog.show(height: RsScreen.h * 0.35, children: [
+      Text("Finish this meeting",
+          textAlign: TextAlign.center,
+          style: RsTextStyle.extraBold.copyWith(fontSize: 16.sp)),
+      16.gH,
+      const Divider(
+        color: RsColorScheme.grey,
+      ),
+      4.gH,
+      Icon(
+        Icons.help_rounded,
+        color: RsColorScheme.primary,
+        size: 50.w,
+      ),
+      8.gH,
+      Text(
+        "Are you sure want to finish this meeting?\nAfter meeting finished you can't edit or add notes anymore.",
+        textAlign: TextAlign.center,
+        style: RsTextStyle.regular
+            .copyWith(fontSize: 12.sp, color: RsColorScheme.text),
+      ),
+      16.gH,
+      RsButton(
+          width: RsScreen.w,
+          radius: 10.r,
+          buttonColor: RsColorScheme.primary,
+          splashColor: RsColorScheme.secondary,
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Finish this meeting",
-                  style: RsTextStyle.extraBold.copyWith(fontSize: 16.sp)),
-              16.gH,
-              const Divider(
-                color: RsColorScheme.grey,
-              ),
-              4.gH,
-              Icon(
-                Icons.help_rounded,
-                color: RsColorScheme.primary,
-                size: 50.w,
-              ),
-              4.gH,
               Text(
-                "Are you sure want to finish this meeting?",
-                textAlign: TextAlign.center,
-                style: RsTextStyle.regular
-                    .copyWith(fontSize: 12.sp, color: RsColorScheme.text),
+                "Confirm",
+                style: RsTextStyle.bold.copyWith(color: Colors.white),
               ),
-              16.gH,
-              RsButton(
-                  width: RsScreen.w,
-                  radius: 10.r,
-                  buttonColor: RsColorScheme.primary,
-                  splashColor: RsColorScheme.secondary,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Confirm",
-                        style: RsTextStyle.bold.copyWith(color: Colors.white),
-                      ),
-                      8.gW,
-                      Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                        size: 18.w,
-                      ),
-                    ],
-                  ),
-                  onTap: () async {
-                    await EasyLoading.show();
-                    final res = await MeetRepository().finish(id: args['id']);
-                    if (res.isNotEmpty) {
-                      isNotulensiExist.value = true;
-                      await EasyLoading.dismiss();
-                      Get.back();
-                      RsToast.show("Success", "Meeting finished");
-                      getDetailMeet();
-                    }
-                  }),
-              8.gH,
+              8.gW,
+              Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+                size: 18.w,
+              ),
             ],
           ),
-        ),
-      ),
-    );
+          onTap: () async {
+            await EasyLoading.show();
+            final res = await MeetRepository().finish(id: args['id']);
+            if (res.isNotEmpty) {
+              isNotulensiExist.value = true;
+              await EasyLoading.dismiss();
+              Get.back();
+              RsToast.show("Success", "Meeting finished");
+              getDetailMeet();
+            }
+          }),
+      8.gH,
+    ]);
   }
 }

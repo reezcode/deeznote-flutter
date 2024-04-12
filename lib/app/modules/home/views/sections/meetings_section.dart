@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:deeznote/app/modules/home/controllers/home_controller.dart';
+import 'package:deeznote/common/extensions/gaps.dart';
 import 'package:deeznote/common/styles/rs_style_library.dart';
+import 'package:deeznote/common/utils/core.dart';
 import 'package:deeznote/common/utils/screen.dart';
 import 'package:deeznote/common/widgets/custom/custom_shimmer.dart';
+import 'package:deeznote/common/widgets/prebuilt/rs_custom_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -103,38 +106,54 @@ class _MeetingSectionState extends State<MeetingSection> {
                         ],
                       ),
                       padding: EdgeInsets.all(16.w),
-                      child: widget.controller.meetingList.isNotEmpty
-                          ? ListView.builder(
-                              controller: scrollController,
-                              itemCount: widget.controller.meetingList.length,
-                              itemBuilder: (context, index) {
-                                final meet =
-                                    widget.controller.meetingList[index];
-                                if (index == 0) {
-                                  return Center(
-                                    child: Container(
-                                        width: 80.w,
-                                        height: 10.w,
-                                        margin: EdgeInsets.only(bottom: 16.h),
-                                        decoration: BoxDecoration(
-                                          color: RsColorScheme.grey
-                                              .withOpacity(0.3),
-                                          borderRadius:
-                                              BorderRadius.circular(100.r),
-                                        )),
-                                  );
-                                }
-                                return RsCardV1(
-                                    dayLeft: differenceInDays(
-                                        meet['meetDate'], DateTime.now()),
-                                    id: meet['idMeet'],
-                                    title: meet['meetTitle'],
-                                    date:
-                                        formatDateTime(meet['meetDate'], false),
-                                    time: formatTime(meet['meetDate']),
-                                    client: meet['customerName']);
-                              })
-                          : const ListLongShimmer());
+                      child: observe(
+                        event: widget.controller.meetListEvent,
+                        loading: const ListLongShimmer(),
+                        error: (msg) => RsError(
+                            msg: msg,
+                            light: false,
+                            onError: widget.controller.getMeetList),
+                        success: (data) => ListView.builder(
+                            controller: scrollController,
+                            itemCount: data.length,
+                            itemBuilder: (context, index) {
+                              final meet = data[index];
+                              if (index == 0) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Center(
+                                      child: Container(
+                                          width: 80.w,
+                                          height: 10.w,
+                                          margin: EdgeInsets.only(bottom: 16.h),
+                                          decoration: BoxDecoration(
+                                            color: RsColorScheme.grey
+                                                .withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(100.r),
+                                          )),
+                                    ),
+                                    Text("This Month Meetings",
+                                        style: RsTextStyle.bold.copyWith(
+                                            color: RsColorScheme.text,
+                                            fontSize: 16.sp)),
+                                    16.gH
+                                  ],
+                                );
+                              }
+                              return RsCardV1(
+                                  rawDate: meet['meetDate'],
+                                  dayLeft: differenceInDays(
+                                      meet['meetDate'], DateTime.now()),
+                                  id: meet['idMeet'],
+                                  statusCode: 2,
+                                  title: meet['meetTitle'],
+                                  date: formatDateTime(meet['meetDate'], false),
+                                  time: formatTime(meet['meetDate']),
+                                  client: meet['customerName']);
+                            }),
+                      ));
                 },
               )
             ],

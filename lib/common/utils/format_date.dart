@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 String formatDate(DateTime date) {
   return DateFormat('dd MMMM yyyy').format(date);
@@ -31,4 +32,20 @@ int differenceInDays(
 ) {
   DateTime dateTime2 = DateTime.parse(date2);
   return dateTime2.difference(date1).inDays;
+}
+
+String getStatusText(int dayLeft, String rawDate, int statusCode) {
+  if (dayLeft == 0 && isSameDay(DateTime.now(), DateTime.parse(rawDate))) {
+    return "Today";
+  } else if (dayLeft == 1 ||
+      (dayLeft == 0 && !isSameDay(DateTime.now(), DateTime.parse(rawDate)))) {
+    return "Tomorrow";
+  } else if (dayLeft < 0) {
+    if (statusCode < 2) {
+      return "Late";
+    } else if (statusCode == 2) {
+      return "Finished";
+    }
+  }
+  return "$dayLeft day left";
 }

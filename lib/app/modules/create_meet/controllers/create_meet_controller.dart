@@ -2,7 +2,7 @@ import 'package:deeznote/app/domain/di/controllers/universal_controller.dart';
 import 'package:deeznote/app/domain/impl/meet_impl.dart';
 import 'package:deeznote/app/domain/impl/office_impl.dart';
 import 'package:deeznote/app/domain/impl/staff_impl.dart';
-import 'package:deeznote/app/routes/app_pages.dart';
+import 'package:deeznote/app/modules/detail_meet/controllers/detail_meet_controller.dart';
 import 'package:deeznote/common/widgets/rs_turing.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +20,21 @@ class CreateMeetController extends GetxController {
   //TODO: Implement CreateMeetController
   UniversalController universalController = Get.find<UniversalController>();
   UploadController uploadController = Get.find<UploadController>();
+  final args = Get.arguments;
+
+  /// CONTROLLER ///
+  TextEditingController meetNameController = TextEditingController();
+  TextEditingController customerController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController meetLinkController = TextEditingController();
+  TextEditingController reminderController = TextEditingController();
+
+  /// ---- ///
 
   @override
   void onInit() {
     super.onInit();
+    if (args['type'] == FormAction.update) initUpdate();
     getInitData();
   }
 
@@ -47,32 +58,60 @@ class CreateMeetController extends GetxController {
   RxList formConfig = [].obs;
   RxBool isLoading = true.obs;
 
-  void createMeet(GlobalKey<FormBuilderState> form) async {
+  void cuMeet(GlobalKey<FormBuilderState> form) async {
     await EasyLoading.show();
     final formData = form.currentState!.value;
-    final res = await MeetRepository().create(
-      meetTitle: formData['meet_name'],
-      meetDate:
-          "${DateFormat("yyyy-MM-ddTHH:mm:ss.SSSZ").format(DateTime.parse(formData['date'].toString()).toUtc())}Z",
-      officeId: formData['office_location'],
-      meetLink: formData['meet_link'],
-      attachment: uploadController.listFile,
-      meetReminder: int.parse(formData['meet_reminder'].isNotEmpty
-          ? formData['meet_reminder']
-          : '5'),
-      involvedStaff: universalController.selectedData,
-      customerName: formData['customer_name'],
-    );
+    final res = (args['type'] == FormAction.create)
+        ? await MeetRepository().create(
+            meetTitle: formData['meet_name'],
+            meetDate:
+                "${DateFormat("yyyy-MM-ddTHH:mm:ss.SSSZ").format(DateTime.parse(formData['date'].toString()).toUtc())}Z",
+            officeId: formData['office_location'],
+            meetLink: formData['meet_link'],
+            attachment: uploadController.listFile,
+            meetReminder: int.parse(formData['meet_reminder'].isNotEmpty
+                ? formData['meet_reminder']
+                : '5'),
+            involvedStaff: universalController.selectedData,
+            customerName: formData['customer_name'],
+          )
+        : await MeetRepository().update(
+            id: args['data']['idMeet'],
+            meetTitle: formData['meet_name'],
+            meetDate:
+                "${DateFormat("yyyy-MM-ddTHH:mm:ss.SSSZ").format(DateTime.parse(formData['date'].toString()).toUtc())}Z",
+            officeId: formData['office_location'],
+            meetLink: formData['meet_link'],
+            attachment: uploadController.listFile,
+            meetReminder: int.parse(formData['meet_reminder'].isNotEmpty
+                ? formData['meet_reminder']
+                : '5'),
+            involvedStaff: universalController.selectedData,
+            customerName: formData['customer_name'],
+          );
     if (res.isNotEmpty) {
       EasyLoading.dismiss();
-      RsToast.show("Success", "Meeting created successfully 🎉");
-      Get.offNamed(Routes.HOME);
+      DetailMeetController detailMeetController = Get.find();
+      detailMeetController.getDetailMeet();
+      Get.back();
+      RsToast.show("Success",
+          "Meeting ${args['type'] == FormAction.create ? 'created' : 'updated'} successfully 🎉");
       universalController.selectedData.clear();
       uploadController.listFile.clear();
     } else {
       EasyLoading.dismiss();
-      RsToast.show("Error", "Failed to create meeting 😪");
+      RsToast.show("Error",
+          "Failed to ${args['type'] == FormAction.create ? 'create' : 'update'} meeting 😪");
     }
+  }
+
+  void initUpdate() {
+    final data = args['data'];
+    meetNameController.text = data['meetTitle'];
+    customerController.text = data['customerName'];
+    // locationController.text = data['officeLocation']['idOfficeLocation'];
+    meetLinkController.text = data['meetLink'];
+    // reminderController.text = data['meetReminder'].toString();
   }
 
   void getInitData() async {
@@ -85,18 +124,18 @@ class CreateMeetController extends GetxController {
       RsFormModel(
         formType: FormType.text,
         name: "meet_name",
-        controller: TextEditingController(),
-        label: "Nama Meeting",
-        hint: "Masukan nama meeting",
+        controller: meetNameController,
+        label: "Meeting Name",
+        hint: "Fill meeting name",
         icon: Icons.video_call_rounded,
-        // validator: FormBuilderValidators.compose([
-        //   FormBuilderValidators.required(errorText: "Nama meeting is required"),
-        // ]),
       ),
       RsFormModel(
         formType: FormType.date,
         name: "date",
         controller: TextEditingController(),
+        initDateValue: (args['type'] == FormAction.update)
+            ? DateTime.parse(args['data']['meetDate'])
+            : null,
         label: "Tanggal",
         hint: "Pilih tanggal",
         icon: Icons.date_range_rounded,
@@ -107,7 +146,7 @@ class CreateMeetController extends GetxController {
       RsFormModel(
         formType: FormType.text,
         name: "customer_name",
-        controller: TextEditingController(),
+        controller: customerController,
         label: "Nama Customer",
         hint: "Masukan nama customer",
         icon: Icons.person_rounded,
@@ -118,7 +157,7 @@ class CreateMeetController extends GetxController {
         valueField: "idOfficeLocation",
         textField: "locationName",
         name: "office_location",
-        controller: TextEditingController(),
+        controller: locationController,
         label: "Lokasi Kantor",
         hint: "Pilih lokasi kantor",
         icon: Icons.location_city_rounded,
@@ -152,7 +191,7 @@ class CreateMeetController extends GetxController {
       RsFormModel(
         formType: FormType.text,
         name: "meet_link",
-        controller: TextEditingController(),
+        controller: meetLinkController,
         label: "Link Meeting",
         hint: "Masukan link meeting",
         icon: Icons.link,
@@ -160,14 +199,10 @@ class CreateMeetController extends GetxController {
       RsFormModel(
         formType: FormType.text,
         name: "meet_reminder",
-        controller: TextEditingController(),
+        controller: reminderController,
         label: "Pengingat Meeting (Hari)",
         hint: "Masukan pengingat meeting",
         icon: Icons.location_city_rounded,
-        // validator: FormBuilderValidators.compose([
-        //   FormBuilderValidators.required(
-        //       errorText: "Pengingat meeting is required"),
-        // ]),
       ),
     ];
   }
