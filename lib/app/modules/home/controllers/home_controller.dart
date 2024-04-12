@@ -15,6 +15,7 @@ import 'package:deeznote/common/widgets/custom/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../common/utils/format_date.dart';
 import '../../../../common/widgets/prebuilt/rs_custom_v_card.dart';
@@ -25,6 +26,7 @@ class HomeController extends GetxController {
   Rx<DateTime> selectedDay = DateTime.now().obs;
   Rx<Color> appBarColor = RsColorScheme.primary.obs;
   RxInt selectedIndex = 0.obs;
+  Rx<String> titleMeet = "This Month Meetings".obs;
   RexEvent homeEvent = RexEvent.init();
   RexEvent meetListEvent = RexEvent.init();
 
@@ -79,7 +81,10 @@ class HomeController extends GetxController {
     selectedIndex.value = index;
     when(index, {
       0: () => getDashboardData(),
-      1: () => getMeetList(),
+      1: () {
+        getMeetList();
+        titleMeet.value = "This Month Meetings";
+      },
       2: () {},
       3: () {}
     });
@@ -87,8 +92,12 @@ class HomeController extends GetxController {
 
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     this.selectedDay.value = selectedDay;
-    getMeetList(
-        startDate: selectedDay.toString(), endDate: selectedDay.toString());
+    DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    DateTime endDate = selectedDay.add(const Duration(days: 1));
+    String formattedEndDate = formatter.format(endDate.toUtc());
+    String formattedDate = formatter.format(selectedDay.toUtc());
+    getMeetList(startDate: formattedDate, endDate: formattedEndDate);
+    titleMeet.value = DateFormat("EEEE, dd MMMM yyyy").format(selectedDay);
   }
 
   void createMeet() {
@@ -155,6 +164,7 @@ class HomeController extends GetxController {
         endDate: endDate,
       );
       if (res.isNotEmpty) {
+        res.insert(0, {});
         emit(RsEvent.success(res));
         refresh();
       } else {

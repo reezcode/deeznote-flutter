@@ -15,11 +15,8 @@ class RsInterceptor {
     if (e.type == DioExceptionType.cancel) {
       RsToast.show('Error!😓', 'Request Cancelled');
     }
-    if (e.type == DioExceptionType.badResponse) {
-      RsToast.show('Error!😓', 'Bad Response');
-    }
     if (e.response != null) {
-      RsToast.show('Error!😓', '${e.response!.data['error_message']}!');
+      RsToast.show('Failed!😓', '${e.response!.data['message']}!');
     }
   }
 }

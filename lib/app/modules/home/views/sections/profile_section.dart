@@ -36,7 +36,7 @@ class ProfileSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(200.r),
                     image: DecorationImage(
                         image:
-                            AssetImage('assets/images/img_profile_photo.png'),
+                            NetworkImage('user_detail'.load()['profilePict']),
                         fit: BoxFit.cover)),
               ),
               8.gH,

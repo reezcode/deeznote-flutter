@@ -108,7 +108,9 @@ class _MeetingSectionState extends State<MeetingSection> {
                       padding: EdgeInsets.all(16.w),
                       child: observe(
                         event: widget.controller.meetListEvent,
-                        loading: const ListLongShimmer(),
+                        loading: const ListLongShimmer(
+                          count: 3,
+                        ),
                         error: (msg) => RsError(
                             msg: msg,
                             light: false,
@@ -134,7 +136,7 @@ class _MeetingSectionState extends State<MeetingSection> {
                                                 BorderRadius.circular(100.r),
                                           )),
                                     ),
-                                    Text("This Month Meetings",
+                                    Text(widget.controller.titleMeet.value,
                                         style: RsTextStyle.bold.copyWith(
                                             color: RsColorScheme.text,
                                             fontSize: 16.sp)),

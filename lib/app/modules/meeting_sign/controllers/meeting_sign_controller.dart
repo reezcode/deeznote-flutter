@@ -52,6 +52,10 @@ class MeetingSignController extends GetxController {
       signPerson.value = "Customer";
       EasyLoading.dismiss();
     } else {
+      ui.Image image = await signaturePadKey.currentState!.toImage();
+      File file = await FileHelper().saveImageToFile(image);
+      final res = await uploadController.uploadImage(result: file);
+      customerSign.value = res;
       Get.dialog(
         barrierDismissible: true,
         useSafeArea: true,
@@ -109,12 +113,6 @@ class MeetingSignController extends GetxController {
                     ),
                     onTap: () async {
                       await EasyLoading.show();
-                      ui.Image image =
-                          await signaturePadKey.currentState!.toImage();
-                      File file = await FileHelper().saveImageToFile(image);
-                      final res =
-                          await uploadController.uploadImage(result: file);
-                      customerSign.value = res;
                       NotulensiRepository()
                           .update(
                               meetIdMeet: args['meetId'],
@@ -124,9 +122,9 @@ class MeetingSignController extends GetxController {
                           .then((value) {
                         if (value.isNotEmpty) {
                           EasyLoading.dismiss();
+                          Get.back();
+                          Get.back();
                           RsToast.show("Success", "Sign has been saved");
-                          Get.back();
-                          Get.back();
                           detailMeetController.getDetailMeet();
                         } else {
                           EasyLoading.dismiss();

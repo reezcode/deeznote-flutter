@@ -147,12 +147,12 @@ class DetailMeetView extends GetView<DetailMeetController> {
                             )),
                       ),
                       16.gH,
-                      Visibility(
-                        visible: controller.statusCode.value != 1,
-                        child: Column(
-                          children: [
-                            16.gH,
-                            RsButton(
+                      Column(
+                        children: [
+                          16.gH,
+                          Visibility(
+                            visible: controller.statusCode.value == 0,
+                            child: RsButton(
                                 width: RsScreen.w,
                                 radius: 10.r,
                                 splashColor: RsColorScheme.secondary,
@@ -174,38 +174,36 @@ class DetailMeetView extends GetView<DetailMeetController> {
                                     )
                                   ],
                                 )),
-                            16.gH,
-                            Visibility(
-                              visible: controller.statusCode.value != 1,
-                              child: RsButton(
-                                  width: RsScreen.w,
-                                  radius: 10.r,
-                                  buttonColor: RsColorScheme.danger,
-                                  splashColor: RsColorScheme.secondary,
-                                  onTap: controller.deleteMeet,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Delete Meet",
-                                        style: RsTextStyle.bold.copyWith(
-                                            fontSize: 14.sp,
-                                            color: Colors.white),
-                                      ),
-                                      4.gW,
-                                      Icon(
-                                        Icons.delete_forever,
-                                        size: 21.w,
-                                        color: Colors.white,
-                                      )
-                                    ],
-                                  )),
-                            ),
-                            16.gH,
-                          ],
-                        ),
+                          ),
+                          16.gH,
+                          Visibility(
+                            visible: true,
+                            child: RsButton(
+                                width: RsScreen.w,
+                                radius: 10.r,
+                                buttonColor: RsColorScheme.danger,
+                                splashColor: RsColorScheme.secondary,
+                                onTap: controller.deleteMeet,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Delete Meet",
+                                      style: RsTextStyle.bold.copyWith(
+                                          fontSize: 14.sp, color: Colors.white),
+                                    ),
+                                    4.gW,
+                                    Icon(
+                                      Icons.delete_forever,
+                                      size: 21.w,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                )),
+                          ),
+                          16.gH,
+                        ],
                       )
                     ].loader(loading: controller.isLoading.value, count: 6))
               ],
