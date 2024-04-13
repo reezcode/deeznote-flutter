@@ -11,7 +11,18 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => RsScaffold(
-          body: controller.pages[controller.selectedIndex]!,
+          body: PageView(
+            controller: controller.pageController,
+            onPageChanged: (index) {
+              controller.selectedIndex.value = index;
+            },
+            children: [
+              controller.pages[0]!,
+              controller.pages[1]!,
+              controller.pages[2]!,
+              controller.pages[3]!,
+            ],
+          ),
           appbar: AppBar(
             shadowColor: Colors.transparent,
             centerTitle: controller.selectedIndex.value == 3 ? true : false,
@@ -25,6 +36,7 @@ class HomeView extends GetView<HomeController> {
           bgColor: RsColorScheme.primary,
           withNavbar: true,
           onTap: controller.togglePage,
+          selectedIndex: controller.selectedIndex.value,
         ));
   }
 }

@@ -27,6 +27,8 @@ class HomeController extends GetxController {
   Rx<Color> appBarColor = RsColorScheme.primary.obs;
   RxInt selectedIndex = 0.obs;
   Rx<String> titleMeet = "This Month Meetings".obs;
+  RxInt selectedTab = 0.obs;
+  PageController pageController = PageController();
   RexEvent homeEvent = RexEvent.init();
   RexEvent meetListEvent = RexEvent.init();
 
@@ -39,6 +41,8 @@ class HomeController extends GetxController {
   void onReady() {
     arguments = Get.arguments;
     getDashboardData();
+    getMeetList();
+    titleMeet.value = "This Month Meetings";
     super.onReady();
   }
 
@@ -46,6 +50,12 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
   }
+
+  List<Map<String, dynamic>> meetTab = [
+    {'idx': 0, 'icon': Icons.calendar_today, 'title': 'Upcoming Meetings'},
+    {'idx': 1, 'icon': Icons.watch_later_outlined, 'title': 'Ongoing Meetings'},
+    {'idx': 2, 'icon': Icons.done_all_rounded, 'title': 'Finished Meetings'}
+  ];
 
   Map<int, Widget> get pages => {
         0: HomeSection(controller: this),
@@ -79,15 +89,12 @@ class HomeController extends GetxController {
 
   void togglePage(int index) {
     selectedIndex.value = index;
-    when(index, {
-      0: () => getDashboardData(),
-      1: () {
-        getMeetList();
-        titleMeet.value = "This Month Meetings";
-      },
-      2: () {},
-      3: () {}
-    });
+    pageController.jumpToPage(index);
+  }
+
+  void toggleTab(int index) {
+    selectedTab.value = index;
+    when(index, {0: () {}, 1: () {}, 2: () {}});
   }
 
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -129,7 +136,7 @@ class HomeController extends GetxController {
           ? Column(
               children: homeEvent.value.data['todayMeet']
                   .map<Widget>((e) => RsCardV1(
-                      statusCode: 2,
+                      statusCode: e['status_code'],
                       rawDate: e['meetDate'],
                       dayLeft: differenceInDays(e['meetDate'], DateTime.now()),
                       id: e['idMeet'],

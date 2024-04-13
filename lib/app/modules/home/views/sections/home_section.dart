@@ -4,6 +4,8 @@ import 'package:deeznote/app/modules/home/controllers/home_controller.dart';
 import 'package:deeznote/common/extensions/gaps.dart';
 import 'package:deeznote/common/utils/core.dart';
 import 'package:deeznote/common/utils/format_date.dart';
+import 'package:deeznote/common/widgets/custom/custom_blank.dart';
+import 'package:deeznote/common/widgets/prebuilt/rs_custom_card.dart';
 import 'package:deeznote/common/widgets/prebuilt/rs_custom_error.dart';
 import 'package:deeznote/common/widgets/prebuilt/rs_custom_loading.dart';
 import 'package:flutter/material.dart';
@@ -151,17 +153,23 @@ class HomeSection extends StatelessWidget {
                         ],
                       )),
                 ),
-                16.gH,
+                32.gH,
                 FadeInDown(
-                  duration: const Duration(milliseconds: 1100),
-                  curve: Curves.fastEaseInToSlowEaseOut,
-                  child: Text(
-                    "Upcoming Meeting",
-                    style: RsTextStyle.bold
-                        .copyWith(color: RsColorScheme.text, fontSize: 16.sp),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+                    duration: const Duration(milliseconds: 1100),
+                    curve: Curves.fastEaseInToSlowEaseOut,
+                    child: SizedBox(
+                      width: RsScreen.w,
+                      height: 45.w,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: controller.meetTab
+                            .map((e) => RsTab(
+                                onTap: controller.toggleTab,
+                                currentIdx: controller.selectedTab.value,
+                                e: e))
+                            .toList(),
+                      ),
+                    )),
                 16.gH,
                 ...data['upcomingMeeting'].asMap().entries.map((entry) {
                   int index = entry.key;
@@ -170,7 +178,7 @@ class HomeSection extends StatelessWidget {
                     duration: Duration(milliseconds: 1100 + (index * 300)),
                     curve: Curves.fastEaseInToSlowEaseOut,
                     child: RsCardV1(
-                      statusCode: 2,
+                      statusCode: e['status_code'],
                       rawDate: e['meetDate'],
                       dayLeft: differenceInDays(e['meetDate'], DateTime.now()),
                       id: e['idMeet'],
@@ -181,6 +189,9 @@ class HomeSection extends StatelessWidget {
                     ),
                   );
                 }).toList(),
+                Visibility(
+                    visible: data['upcomingMeeting'].length == 1,
+                    child: const CardBlank()),
                 50.gH,
               ])
         ],

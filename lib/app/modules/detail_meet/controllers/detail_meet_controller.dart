@@ -1,7 +1,6 @@
 import 'package:deeznote/app/domain/impl/notulensi_impl.dart';
 import 'package:deeznote/app/routes/app_pages.dart';
 import 'package:deeznote/common/extensions/gaps.dart';
-import 'package:deeznote/common/utils/core.dart';
 import 'package:deeznote/common/utils/date.dart';
 import 'package:deeznote/common/widgets/custom/custom_dialog.dart';
 import 'package:deeznote/common/widgets/rs_turing.dart';
@@ -148,10 +147,8 @@ class DetailMeetController extends GetxController {
       );
     } else {
       if (isNotulensiExist.value) {
-        when(statusCode.value, {
-          1: () => RsToast.show("Hold On", "Meeting already started"),
-          2: () => RsToast.show("Hold On", "Meeting already finished")
-        });
+        RsToast.show("Hold On",
+            "Meeting already ${statusCode.value == 1 ? 'started' : 'finished'}");
       } else {
         RsToast.show("Hold On", "Meeting date not reached yet");
       }

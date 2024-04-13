@@ -37,51 +37,55 @@ class _MeetingSectionState extends State<MeetingSection> {
             children: [
               Align(
                 alignment: Alignment.topCenter,
-                child: Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 0.w, horizontal: 16.w),
-                  child: TableCalendar(
-                      focusedDay: widget.controller.selectedDay.value,
-                      firstDay: DateTime.utc(2021, 10, 4),
-                      lastDay: DateTime.utc(2099, 10, 4),
-                      availableGestures: AvailableGestures.all,
-                      onDaySelected: widget.controller.onDaySelected,
-                      selectedDayPredicate: (day) =>
-                          isSameDay(day, widget.controller.selectedDay.value),
-                      headerStyle: HeaderStyle(
-                          formatButtonVisible: false,
-                          titleCentered: true,
-                          titleTextStyle: RsTextStyle.semiBold.copyWith(
-                              color: RsColorScheme.text, fontSize: 18.sp)),
-                      calendarStyle: CalendarStyle(
-                        holidayTextStyle: RsTextStyle.regular.copyWith(
-                          color: Colors.red,
-                        ),
-                        weekendTextStyle: RsTextStyle.regular.copyWith(
-                          color: Colors.red,
-                        ),
-                        todayDecoration: BoxDecoration(
-                          color: RsColorScheme.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        selectedDecoration: BoxDecoration(
-                          color: RsColorScheme.primary.withOpacity(0.5),
-                          shape: BoxShape.circle,
-                        ),
-                        selectedTextStyle: RsTextStyle.regular.copyWith(
-                          color: Colors.white,
-                        ),
-                        todayTextStyle: RsTextStyle.regular.copyWith(
-                          color: Colors.white,
-                        ),
-                        defaultTextStyle: RsTextStyle.regular.copyWith(
-                          color: Colors.black,
-                        ),
-                        outsideTextStyle: RsTextStyle.regular.copyWith(
-                          color: Colors.grey,
-                        ),
-                        outsideDaysVisible: false,
-                      )),
+                child: ListView(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 0.w, horizontal: 16.w),
+                      child: TableCalendar(
+                          focusedDay: widget.controller.selectedDay.value,
+                          firstDay: DateTime.utc(2021, 10, 4),
+                          lastDay: DateTime.utc(2099, 10, 4),
+                          availableGestures: AvailableGestures.all,
+                          onDaySelected: widget.controller.onDaySelected,
+                          selectedDayPredicate: (day) => isSameDay(
+                              day, widget.controller.selectedDay.value),
+                          headerStyle: HeaderStyle(
+                              formatButtonVisible: false,
+                              titleCentered: true,
+                              titleTextStyle: RsTextStyle.semiBold.copyWith(
+                                  color: RsColorScheme.text, fontSize: 18.sp)),
+                          calendarStyle: CalendarStyle(
+                            holidayTextStyle: RsTextStyle.regular.copyWith(
+                              color: Colors.red,
+                            ),
+                            weekendTextStyle: RsTextStyle.regular.copyWith(
+                              color: Colors.red,
+                            ),
+                            todayDecoration: BoxDecoration(
+                              color: RsColorScheme.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            selectedDecoration: BoxDecoration(
+                              color: RsColorScheme.primary.withOpacity(0.5),
+                              shape: BoxShape.circle,
+                            ),
+                            selectedTextStyle: RsTextStyle.regular.copyWith(
+                              color: Colors.white,
+                            ),
+                            todayTextStyle: RsTextStyle.regular.copyWith(
+                              color: Colors.white,
+                            ),
+                            defaultTextStyle: RsTextStyle.regular.copyWith(
+                              color: Colors.black,
+                            ),
+                            outsideTextStyle: RsTextStyle.regular.copyWith(
+                              color: Colors.grey,
+                            ),
+                            outsideDaysVisible: false,
+                          )),
+                    ),
+                  ],
                 ),
               ),
               DraggableScrollableSheet(
@@ -149,7 +153,7 @@ class _MeetingSectionState extends State<MeetingSection> {
                                   dayLeft: differenceInDays(
                                       meet['meetDate'], DateTime.now()),
                                   id: meet['idMeet'],
-                                  statusCode: 2,
+                                  statusCode: meet['status_code'],
                                   title: meet['meetTitle'],
                                   date: formatDateTime(meet['meetDate'], false),
                                   time: formatTime(meet['meetDate']),

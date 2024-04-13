@@ -10,6 +10,7 @@ class RsCard extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Widget child;
   final double? radius;
+  final Color? color;
   const RsCard({
     Key? key,
     required this.width,
@@ -18,6 +19,7 @@ class RsCard extends StatelessWidget {
     this.padding,
     required this.child,
     this.radius,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,7 @@ class RsCard extends StatelessWidget {
         margin: margin,
         padding: padding,
         decoration: BoxDecoration(
-          color: RsColorScheme.primaryLight.withOpacity(0.15),
+          color: color ?? RsColorScheme.primaryLight.withOpacity(0.15),
 
           borderRadius: BorderRadius.circular(radius ?? 10),
           // boxShadow: [

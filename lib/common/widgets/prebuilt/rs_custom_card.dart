@@ -473,3 +473,58 @@ class _RsCardListDetailState extends State<RsCardListDetail> {
     );
   }
 }
+
+class RsTab extends StatelessWidget {
+  final int currentIdx;
+  final Map e;
+  final Function(int) onTap;
+  const RsTab({
+    Key? key,
+    required this.currentIdx,
+    required this.e,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        onTap(e['idx']);
+      },
+      child: Container(
+        width: 190.w,
+        height: 45.w,
+        margin: EdgeInsets.only(right: 16.w),
+        decoration: BoxDecoration(
+            color:
+                currentIdx != e['idx'] ? Colors.white : RsColorScheme.primary,
+            border: Border.all(color: RsColorScheme.primary),
+            borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              e['icon'],
+              size: 20,
+              color:
+                  currentIdx != e['idx'] ? RsColorScheme.primary : Colors.white,
+            ),
+            8.gW,
+            Text(
+              e['title'],
+              style: (currentIdx != e['idx']
+                      ? RsTextStyle.medium
+                      : RsTextStyle.bold)
+                  .copyWith(
+                      fontSize: 13.sp,
+                      color: currentIdx != e['idx']
+                          ? RsColorScheme.primary
+                          : Colors.white),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

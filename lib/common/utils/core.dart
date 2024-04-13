@@ -3,14 +3,14 @@ import 'package:deeznote/app/domain/states/common_state.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+Object none = Object();
+
 /// Return by one or more condition with seamlessly
 dynamic when(dynamic value, Map<dynamic, Function> cases) {
-  if (cases.containsKey(value)) {
+  if (cases[value] != null) {
     return cases[value]!();
-  } else if (cases.containsKey('else')) {
-    return cases['else']!();
   } else {
-    throw ArgumentError('No matching case found');
+    return cases[none]!();
   }
 }
 

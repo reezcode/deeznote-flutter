@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deeznote/app/data/sources/local/local_storage.dart';
 import 'package:deeznote/app/modules/home/controllers/home_controller.dart';
 import 'package:deeznote/common/extensions/gaps.dart';
@@ -29,15 +30,24 @@ class ProfileSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 100.w,
-                height: 100.w,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(200.r),
-                    image: DecorationImage(
-                        image:
-                            NetworkImage('user_detail'.load()['profilePict']),
-                        fit: BoxFit.cover)),
+              CachedNetworkImage(
+                imageUrl: 'user_detail'.load()['profilePict'],
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 100.w,
+                  height: 100.w,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(200.r),
+                      image: DecorationImage(
+                          image: imageProvider, fit: BoxFit.cover)),
+                ),
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Center(
+                  child: Icon(
+                    Icons.error,
+                    color: Colors.white,
+                  ),
+                ),
               ),
               8.gH,
               Text(
