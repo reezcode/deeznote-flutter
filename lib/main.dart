@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'app/domain/di/client/dependency_injection.dart';
 import 'app/routes/app_pages.dart';
@@ -18,6 +19,8 @@ void main() async {
   await GetStorage.init();
   MainConfig.configLoading();
   await DependencyInjection.init();
+  await Permission.storage.request();
+  await Permission.manageExternalStorage.request();
 
   runApp(ScreenUtilInit(
     builder: (context, child) => GetMaterialApp(

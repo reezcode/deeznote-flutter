@@ -1,6 +1,5 @@
 import 'package:currency_formatter/currency_formatter.dart';
 import 'package:deeznote/app/routes/app_pages.dart';
-import 'package:deeznote/common/widgets/rs_turing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -60,21 +59,29 @@ class MainConfig {
         Get.toNamed(Routes.EDIT_PROFILE);
       }
     },
-    {
-      'icon': Icons.restore,
-      'title': 'Forgot Password',
-      'description': 'Recover your password',
-      'onTap': () {
-        RsToast.show("Success",
-            "Password recovery email has been sent to your email address");
-      }
-    },
+    // {
+    //   'icon': Icons.restore,
+    //   'title': 'Forgot Password',
+    //   'description': 'Recover your password',
+    //   'onTap': () {
+    //     RsToast.show("Success",
+    //         "Password recovery email has been sent to your email address");
+    //   }
+    // },
     {
       'icon': Icons.fingerprint_rounded,
       'title': 'Update Password',
       'description': 'Change your password',
       'onTap': () {
         Get.toNamed(Routes.UPDATE_PASSWORD);
+      }
+    },
+    {
+      'icon': Icons.help,
+      'title': 'Help & Support',
+      'description': 'Get help from our support team',
+      'onTap': () {
+        Get.toNamed(Routes.HELP_SUPPORT);
       }
     },
   ];

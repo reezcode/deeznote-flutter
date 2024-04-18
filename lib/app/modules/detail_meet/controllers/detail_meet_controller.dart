@@ -1,4 +1,5 @@
 import 'package:deeznote/app/domain/impl/notulensi_impl.dart';
+import 'package:deeznote/app/modules/home/controllers/home_controller.dart';
 import 'package:deeznote/app/routes/app_pages.dart';
 import 'package:deeznote/common/extensions/gaps.dart';
 import 'package:deeznote/common/utils/date.dart';
@@ -135,7 +136,8 @@ class DetailMeetController extends GetxController {
                         getDetailMeet();
                         Get.toNamed(Routes.MEETING_NOTES, arguments: {
                           'meetId': args['id'],
-                          'notulensiId': res['idNotulensi']
+                          'notulensiId': res['idNotulensi'],
+                          'status_code': 1
                         });
                       }
                     }),
@@ -253,7 +255,7 @@ class DetailMeetController extends GetxController {
         'title': 'Download Meeting',
         'description': "Download meeting notes",
         'isEnabled': isNotulensiExist.value,
-        'onTap': () {
+        'onTap': () async {
           if (isNotulensiExist.value) {
             downloadNotul();
           } else {
@@ -349,6 +351,8 @@ class DetailMeetController extends GetxController {
                 final res = await MeetRepository().delete(id: args['id']);
                 if (res == 200) {
                   await EasyLoading.dismiss();
+                  HomeController controller = Get.find();
+                  controller.getDashboardData();
                   Get.back();
                   Get.back();
                   RsToast.show("Success", "Meeting deleted");

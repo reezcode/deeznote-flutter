@@ -40,7 +40,7 @@ class UpdatePasswordView extends GetView<UpdatePasswordController> {
                       config: FormConfig().updatePasswordForm,
                       buttonText: "Update",
                       icon: Icons.save_rounded,
-                      onUpdate: (v) {},
+                      onUpdate: controller.onUpdate,
                     )
                   ],
                 ),

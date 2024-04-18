@@ -43,6 +43,7 @@ class MeetRepository implements MeetAbstractRepository {
       String? endDate,
       int? page,
       int? limit,
+      int? statusMeetCode,
       String? sort,
       String? sortBy}) async {
     try {
@@ -55,6 +56,7 @@ class MeetRepository implements MeetAbstractRepository {
             'sort': sort,
             'sortBy': sortBy,
             'startDate': startDate,
+            if (statusMeetCode != null) 'statusMeetCode': statusMeetCode,
             'endDate': endDate
           },
           token: 'Bearer ${'token'.load()}');

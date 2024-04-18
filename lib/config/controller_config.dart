@@ -14,4 +14,7 @@ class ControllerConfig {
 
   TextEditingController roleNameController = TextEditingController();
   TextEditingController roleCodeController = TextEditingController();
+
+  TextEditingController oldPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
 }

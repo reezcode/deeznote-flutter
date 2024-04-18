@@ -12,6 +12,7 @@ dependencies:
   currency_formatter: ^2.0.1
   draggable_bottom_sheet: ^1.0.2
   flutter_screenutil: ^5.9.0
+  permission_handler: ^11.3.1
   get_storage: ^2.1.1
   google_fonts: ^4.0.4
   image_picker: ^1.0.4
@@ -35,6 +36,7 @@ dependencies:
   table_calendar: ^3.0.9
   animations: ^2.0.11
   animate_do: ^3.3.3
+  pull_to_refresh: ^2.0.0
   syncfusion_flutter_signaturepad: ^24.2.8
   html_editor_enhanced: ^2.5.1
   url_launcher: ^6.0.3

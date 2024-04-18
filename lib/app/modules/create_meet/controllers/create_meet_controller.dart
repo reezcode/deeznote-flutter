@@ -3,6 +3,7 @@ import 'package:deeznote/app/domain/impl/meet_impl.dart';
 import 'package:deeznote/app/domain/impl/office_impl.dart';
 import 'package:deeznote/app/domain/impl/staff_impl.dart';
 import 'package:deeznote/app/modules/detail_meet/controllers/detail_meet_controller.dart';
+import 'package:deeznote/app/modules/home/controllers/home_controller.dart';
 import 'package:deeznote/common/widgets/rs_turing.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -46,11 +47,12 @@ class CreateMeetController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    universalController.selectedData.clear();
+    universalController.selectedData.value = [];
     universalController.selectedStaff.value = "Choose Staff Here...";
     universalController.selectedStaffImage.value =
         "https://via.placeholder.com/150";
-    uploadController.listFile.clear();
+    uploadController.listFile.value = [];
+    uploadController.fileName.value = "Choose file attachment";
   }
 
   RxList officeList = [].obs;
@@ -91,8 +93,13 @@ class CreateMeetController extends GetxController {
           );
     if (res.isNotEmpty) {
       EasyLoading.dismiss();
-      DetailMeetController detailMeetController = Get.find();
-      detailMeetController.getDetailMeet();
+      if (args['type'] == FormAction.update) {
+        DetailMeetController detailMeetController = Get.find();
+        detailMeetController.getDetailMeet();
+      } else {
+        HomeController homeController = Get.find();
+        homeController.getDashboardData();
+      }
       Get.back();
       RsToast.show("Success",
           "Meeting ${args['type'] == FormAction.create ? 'created' : 'updated'} successfully 🎉");
@@ -107,11 +114,25 @@ class CreateMeetController extends GetxController {
 
   void initUpdate() {
     final data = args['data'];
+    final staff = data['users'];
     meetNameController.text = data['meetTitle'];
     customerController.text = data['customerName'];
-    // locationController.text = data['officeLocation']['idOfficeLocation'];
+    locationController.text = data['officeLocation']['idOfficeLocation'];
     meetLinkController.text = data['meetLink'];
-    // reminderController.text = data['meetReminder'].toString();
+    reminderController.text = data['meetReminder'].toString();
+    universalController.selectedStaffImage.value = staff[0]['profilePict'];
+    universalController.selectedStaff.value = staff.length > 1
+        ? "${staff[0]['name']} +${staff.length - 1} others"
+        : staff[0]['name'];
+    universalController.selectedData.value = staff.map((e) => e['id']).toList();
+    if (data['fileAttachment'].isNotEmpty) {
+      uploadController.listFile.value = data['fileAttachment']
+          .map((e) => e['idFileContainer'])
+          .toList()
+          .cast<String>();
+      uploadController.fileName.value =
+          data['fileAttachment'].first['fileTitle'];
+    }
   }
 
   void getInitData() async {

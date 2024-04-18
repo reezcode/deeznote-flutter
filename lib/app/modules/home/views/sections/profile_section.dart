@@ -57,7 +57,7 @@ class ProfileSection extends StatelessWidget {
               ),
               Chip(
                 label: Text(
-                  "Mobile Developer",
+                  'user_detail'.load()['role'],
                   style: RsTextStyle.semiBold
                       .copyWith(fontSize: 12.sp, color: RsColorScheme.text),
                 ),

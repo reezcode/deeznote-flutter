@@ -1,8 +1,6 @@
 import 'package:deeznote/common/enums/form_type.dart';
-import 'package:deeznote/config/form_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
 
 import '../../../../common/styles/rs_style_library.dart';
@@ -20,9 +18,9 @@ class EditProfileView extends GetView<EditProfileController> {
           children: [
             RsFormContainer(
               action: FormAction.update,
-              config: FormConfig().editProfileForm,
+              config: controller.editProfileForm,
               buttonText: "Edit Profile",
-              onUpdate: (v) {},
+              onUpdate: controller.onUpdate,
               icon: Icons.save,
             )
           ],

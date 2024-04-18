@@ -21,7 +21,7 @@ class UploadController extends GetxController {
   RxList<Widget> photoList = <Widget>[].obs;
   List<String> photoSourceList = [];
   List<dynamic> mappedPhoto = [];
-  List<String> listFile = [];
+  RxList listFile = [].obs;
 
   String getImgUrl() {
     return imgrUrl['preview'];

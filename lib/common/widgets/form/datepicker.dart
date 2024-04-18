@@ -42,6 +42,7 @@ class RsDatePicker extends StatelessWidget {
                   hint: hint, label: label, icon: Icons.date_range_rounded),
               initialDate: DateTime.now(),
               style: RsTextStyle.regular,
+              firstDate: DateTime.now(),
               onChanged: onChanged,
               initialValue: initDateValue,
             )

@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:table_calendar/table_calendar.dart';
+
+import '../styles/rs_style_library.dart';
 
 String formatDate(DateTime date) {
   return DateFormat('dd MMMM yyyy').format(date);
@@ -35,17 +37,37 @@ int differenceInDays(
 }
 
 String getStatusText(int dayLeft, String rawDate, int statusCode) {
-  if (dayLeft == 0 && isSameDay(DateTime.now(), DateTime.parse(rawDate))) {
-    return "Today";
-  } else if (dayLeft == 1 ||
-      (dayLeft == 0 && !isSameDay(DateTime.now(), DateTime.parse(rawDate)))) {
-    return "Tomorrow";
-  } else if (dayLeft < 0) {
-    if (statusCode < 2) {
-      return "Late";
-    } else if (statusCode == 2) {
-      return "Finished";
+  if (statusCode == 0) {
+    if (dayLeft == 0) {
+      return 'Today';
+    } else if (dayLeft == 1) {
+      return 'Tomorrow';
+    } else if (dayLeft < 0) {
+      return 'Overdue';
+    } else {
+      return "$dayLeft day left";
     }
+  } else if (statusCode == 1) {
+    return 'Ongoing';
+  } else {
+    return 'Finished';
   }
-  return "$dayLeft day left";
+}
+
+Color getColor(int dayLeft, int statusCode) {
+  if (statusCode == 0) {
+    if (dayLeft == 0) {
+      return RsColorScheme.danger;
+    } else if (dayLeft == 1) {
+      return RsColorScheme.tertiary;
+    } else if (dayLeft < 0) {
+      return RsColorScheme.grey;
+    } else {
+      return RsColorScheme.primary;
+    }
+  } else if (statusCode == 1) {
+    return RsColorScheme.secondary;
+  } else {
+    return RsColorScheme.success;
+  }
 }

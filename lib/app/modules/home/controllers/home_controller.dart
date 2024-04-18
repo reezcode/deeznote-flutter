@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../common/utils/format_date.dart';
 import '../../../../common/widgets/prebuilt/rs_custom_v_card.dart';
@@ -29,9 +31,10 @@ class HomeController extends GetxController {
   Rx<String> titleMeet = "This Month Meetings".obs;
   RxInt selectedTab = 0.obs;
   PageController pageController = PageController();
+  RxString meetTabId = "upcomingMeeting".obs;
   RexEvent homeEvent = RexEvent.init();
   RexEvent meetListEvent = RexEvent.init();
-
+  RefreshController refreshController = RefreshController();
   @override
   void onInit() {
     super.onInit();
@@ -49,6 +52,16 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void onRefresh() async {
+    getDashboardData();
+    refreshController.refreshCompleted();
+  }
+
+  void onLoading() async {
+    await Future.delayed(const Duration(milliseconds: 1000));
+    refreshController.loadComplete();
   }
 
   List<Map<String, dynamic>> meetTab = [
@@ -94,7 +107,11 @@ class HomeController extends GetxController {
 
   void toggleTab(int index) {
     selectedTab.value = index;
-    when(index, {0: () {}, 1: () {}, 2: () {}});
+    when(index, {
+      0: () => meetTabId.value = "upcomingMeeting",
+      1: () => meetTabId.value = "ongoingMeeting",
+      2: () => meetTabId.value = "finishedMeeting",
+    });
   }
 
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -123,6 +140,14 @@ class HomeController extends GetxController {
         emit(RsEvent.error("Failed to fetch the data"));
       }
     });
+  }
+
+  List meetCount({required DateTime date}) {
+    final data = (meetListEvent.value.data as List<dynamic>).sublist(1);
+    final list = data
+        .where((e) => isSameDay(date, DateTime.parse(e['meetDate'])))
+        .toList();
+    return (list.length > 4) ? list.sublist(0, 4) : list;
   }
 
   void showMeet() {
@@ -155,6 +180,7 @@ class HomeController extends GetxController {
     String? sortBy,
     int? page,
     int? limit,
+    int? statusMeetCode,
     String? search,
     String? startDate,
     String? endDate,
@@ -162,14 +188,14 @@ class HomeController extends GetxController {
     flow(meetListEvent, (emit) async {
       emit(RsEvent.loading());
       final res = await MeetRepository().list(
-        sort: sort ?? 'desc',
-        sortBy: sortBy ?? 'meetDate',
-        page: page ?? 1,
-        limit: limit ?? 10,
-        search: search,
-        startDate: startDate,
-        endDate: endDate,
-      );
+          sort: sort ?? 'desc',
+          sortBy: sortBy ?? 'meetDate',
+          page: page ?? 1,
+          limit: limit ?? 99,
+          search: search,
+          startDate: startDate,
+          endDate: endDate,
+          statusMeetCode: statusMeetCode);
       if (res.isNotEmpty) {
         res.insert(0, {});
         emit(RsEvent.success(res));

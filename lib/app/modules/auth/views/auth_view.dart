@@ -58,13 +58,6 @@ class AuthView extends GetView<AuthController> {
                         icon: Icons.arrow_right_rounded,
                         onRead: controller.authLogin,
                         buttonText: "Login"),
-                    18.gH,
-                    Center(
-                      child: Text(
-                        "Forgot your password?",
-                        style: RsTextStyle.medium.copyWith(fontSize: 12.sp),
-                      ),
-                    ),
                     38.gH,
                   ]))
         ],

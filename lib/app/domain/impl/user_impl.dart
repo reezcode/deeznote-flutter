@@ -10,13 +10,6 @@ import '../../routes/app_pages.dart';
 
 class UserRepository implements UserAbstractRepository {
   @override
-  Future<void> detail(
-      {required int id, required Function(Map<String, dynamic> p1) callback}) {
-    // TODO: implement detail
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> login(
       {
       /// Callback data that contain login information in Map<String, dynamic>
@@ -42,11 +35,54 @@ class UserRepository implements UserAbstractRepository {
   }
 
   @override
-  Future<void> update(
-      {required int id,
-      required Function(Map<String, dynamic> p1) callback,
-      required Map<String, dynamic> data}) {
-    // TODO: implement update
+  Future<bool> changePassword(
+      {required String id, required Map<String, dynamic> data}) async {
+    EasyLoading.show();
+    try {
+      final res = await RsAPI.instance.patch(
+          id: id,
+          endpoint: Endpoint.updatePassword,
+          data: data,
+          token: 'Bearer ${'token'.load()}');
+      if (res.status == 200) {
+        EasyLoading.dismiss();
+        return true;
+      }
+    } catch (e) {
+      RsInterceptor.show(e);
+      EasyLoading.dismiss();
+    }
+    EasyLoading.dismiss();
+    return false;
+  }
+
+  @override
+  Future<void> detail(
+      {required String id,
+      required Function(Map<String, dynamic> p1) callback}) {
+    // TODO: implement detail
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Map> update(
+      {required String id, required Map<String, dynamic> data}) async {
+    EasyLoading.show();
+    try {
+      final res = await RsAPI.instance.patch(
+        id: id,
+        endpoint: Endpoint.updateProfile,
+        data: data,
+        token: 'Bearer ${'token'.load()}',
+      );
+      if (res.data != null) {
+        EasyLoading.dismiss();
+        return res.data;
+      }
+    } catch (e) {
+      RsInterceptor.show(e);
+      EasyLoading.dismiss();
+    }
+    return {};
   }
 }

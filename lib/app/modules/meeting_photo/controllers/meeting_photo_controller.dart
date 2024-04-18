@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:deeznote/app/data/sources/local/local_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -58,6 +59,7 @@ class MeetingPhotoController extends GetxController {
   }
 
   void submitPhoto() async {
+    EasyLoading.show();
     final res = await NotulensiRepository().update(
         meetIdMeet: args['meetId'],
         documents: convertRequestList(),
@@ -67,6 +69,7 @@ class MeetingPhotoController extends GetxController {
     } else {
       RsToast.show("Failed", "Failed to save meeting photo");
     }
+    EasyLoading.dismiss();
   }
 
   void uploadFile(XFile? imagePicked) async {

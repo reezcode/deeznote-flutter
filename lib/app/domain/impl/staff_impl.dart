@@ -16,7 +16,7 @@ class StaffRepository implements StaffAbstractRepository {
       final res = await RsAPI.instance.get(
           endpoint: Endpoint.staffList,
           queryParameters: {
-            'search': search,
+            'name': search,
             'page': page,
             'limit': limit,
             'sort': sort,

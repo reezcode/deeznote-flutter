@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:deeznote/common/widgets/rs_turing.dart';
 
 import '../../../data/models/form_model.dart';
+import '../../impl/staff_impl.dart';
 
 class UniversalController extends GetxController with RsValidationMixin {
   // Password Visibility
@@ -12,6 +13,7 @@ class UniversalController extends GetxController with RsValidationMixin {
   RxBool isValid = false.obs;
   RxList selectedData = [].obs;
   RxList staffData = [].obs;
+  RxList staffDataInit = [].obs;
   RxString selectedStaff = "Choose Staff Here...".obs;
   RxString selectedStaffImage = "https://via.placeholder.com/150".obs;
   final loginFormKey = GlobalKey<FormBuilderState>();
@@ -78,38 +80,15 @@ class UniversalController extends GetxController with RsValidationMixin {
     }
   }
 
-  void fillStaffData() {
-    staffData.value = [
-      {
-        "id": 1,
-        "name": "Resma Adi N",
-        "position": "Mobile Developer",
-        "photo": "assets/images/img_profile_photo.png",
-      },
-      {
-        "id": 2,
-        "name": "Irwan F",
-        "position": "Back-End Developer",
-        "photo": "assets/images/img_profile_photo.png",
-      },
-    ];
-  }
-
   /// WELL IMPLEMENTED WHEN USING QUERY API
-
-  void searchStaffData(String query) {
-    if (query.isEmpty) {
-      fillStaffData();
-    } else {
-      staffData.value = staffData
-          .where((e) => e["name"].toString().toLowerCase().contains(query))
-          .toList();
-    }
-  }
 
   bool isSelected(String id) {
     return selectedData.contains(id);
   }
 
   bool checkValidForm(List<RsFormModel> form) => isValidRsForm(form);
+
+  void searchStaffData(String s) async {
+    staffData.value = await StaffRepository().list(search: s);
+  }
 }

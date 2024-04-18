@@ -49,15 +49,7 @@ class RsCardV1 extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Chip(
-                      backgroundColor: (dayLeft == 0)
-                          ? Colors.red
-                          : (dayLeft == 1)
-                              ? RsColorScheme.tertiary
-                              : dayLeft < 0 && statusCode < 2
-                                  ? RsColorScheme.grey
-                                  : dayLeft < 0 && statusCode == 2
-                                      ? RsColorScheme.success
-                                      : RsColorScheme.primary,
+                      backgroundColor: getColor(dayLeft, statusCode),
                       label: Row(
                         children: [
                           Icon(

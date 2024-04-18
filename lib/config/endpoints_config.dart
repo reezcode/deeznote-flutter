@@ -1,5 +1,8 @@
 class Endpoint {
   static const String login = '/login';
+  static const String updatePassword = '/change-password';
+  static const String updateProfile = '/user/updateUser';
+
   static const String upload = '/uploadFile';
   static const String createMeet = '/meet/create-meet';
   static const String showMeet = '/meet/findOne';

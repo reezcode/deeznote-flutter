@@ -4,13 +4,17 @@ abstract class UserAbstractRepository {
       required Map<String, dynamic> data});
 
   Future<void> detail({
-    required int id,
+    required String id,
     required Function(Map<String, dynamic>) callback,
   });
 
-  Future<void> update({
-    required int id,
-    required Function(Map<String, dynamic>) callback,
+  Future<Map> update({
+    required String id,
+    required Map<String, dynamic> data,
+  });
+
+  Future<bool> changePassword({
+    required String id,
     required Map<String, dynamic> data,
   });
 }
