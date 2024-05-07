@@ -17,7 +17,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../common/utils/format_date.dart';
 import '../../../../common/widgets/prebuilt/rs_custom_v_card.dart';

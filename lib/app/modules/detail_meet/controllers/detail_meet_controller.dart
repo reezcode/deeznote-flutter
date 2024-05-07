@@ -54,8 +54,10 @@ class DetailMeetController extends GetxController {
       final res = await NotulensiRepository()
           .show(id: meetData['notulensi'].first['idNotulensi']);
       if (res.isNotEmpty) {
-        isSigned.value = res['notulensiSignPIC'].isNotEmpty &&
-            res['notulensiSignCust'].isNotEmpty;
+        isSigned.value = res['notulensiSignPIC'] != null
+            ? res['notulensiSignPIC'].isNotEmpty &&
+                res['notulensiSignCust'].isNotEmpty
+            : false;
       }
     }
     initData();

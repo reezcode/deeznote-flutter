@@ -33,7 +33,6 @@ class DetailMeetView extends GetView<DetailMeetController> {
           body: WillPopScope(
             onWillPop: () async {
               Get.back();
-              Get.back();
               return true;
             },
             child: ListView(
@@ -54,7 +53,7 @@ class DetailMeetView extends GetView<DetailMeetController> {
                             style: RsTextStyle.extraBold.copyWith(
                                 fontSize: 18.sp, color: Colors.white)),
                         Text(
-                          controller.meetData['customerName'] ?? '-',
+                          "Stakeholder: ${controller.meetData['customerName'] ?? '-'}",
                           style: RsTextStyle.semiBold
                               .copyWith(fontSize: 14.sp, color: Colors.white),
                         ),
@@ -151,7 +150,7 @@ class DetailMeetView extends GetView<DetailMeetController> {
                           Padding(
                             padding: EdgeInsets.only(top: 8.h),
                             child: Visibility(
-                              visible: controller.statusCode.value == 0,
+                              visible: controller.statusCode.value < 2,
                               child: RsButton(
                                   width: RsScreen.w,
                                   radius: 10.r,
