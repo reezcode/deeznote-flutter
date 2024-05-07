@@ -142,13 +142,16 @@ class HomeController extends GetxController {
     });
   }
 
-  List meetCount({required DateTime date}) {
-    final data = (meetListEvent.value.data as List<dynamic>).sublist(1);
-    final list = data
-        .where((e) => isSameDay(date, DateTime.parse(e['meetDate'])))
-        .toList();
-    return (list.length > 4) ? list.sublist(0, 4) : list;
-  }
+  // List meetCount({required DateTime date}) {
+  //   if (meetListEvent.value.data != null) {
+  //     final data = (meetListEvent.value.data as List<dynamic>).sublist(1);
+  //     final list = data
+  //         .where((e) => isSameDay(date, DateTime.parse(e['meetDate'])))
+  //         .toList();
+  //     return (list.length > 4) ? list.sublist(0, 4) : list;
+  //   }
+  //   return [];
+  // }
 
   void showMeet() {
     RsDialog.show(children: [
@@ -201,7 +204,7 @@ class HomeController extends GetxController {
         emit(RsEvent.success(res));
         refresh();
       } else {
-        emit(RsEvent.error("Error"));
+        emit(RsEvent.error("Tidak ada meet yang tersedia"));
       }
     });
   }

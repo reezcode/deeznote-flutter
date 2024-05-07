@@ -47,92 +47,92 @@ class _MeetingSectionState extends State<MeetingSection> {
                           firstDay: DateTime.utc(2021, 10, 4),
                           lastDay: DateTime.utc(2099, 10, 4),
                           availableGestures: AvailableGestures.all,
-                          calendarBuilders: CalendarBuilders(
-                            selectedBuilder: (context, date, _) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 30.w,
-                                    height: 30.w,
-                                    margin: EdgeInsets.all(4.w),
-                                    alignment: Alignment.center,
-                                    decoration: const BoxDecoration(
-                                      color: RsColorScheme.primary,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        2.gH,
-                                        Text(
-                                          '${date.day}',
-                                          style: RsTextStyle.regular.copyWith(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [1, 2, 3]
-                                                .map((e) => Container(
-                                                      width: 4.w,
-                                                      height: 4.w,
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 2.w,
-                                                          left: 2.w),
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Colors.white,
-                                                        shape: BoxShape.circle,
-                                                      ),
-                                                    ))
-                                                .toList())
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                            defaultBuilder: (context, day, focusedDay) {
-                              return Center(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.all(4.w),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '${day.day}',
-                                        style: RsTextStyle.regular.copyWith(
-                                          color: RsColorScheme.text,
-                                        ),
-                                      ),
-                                    ),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: widget.controller
-                                            .meetCount(date: day)
-                                            .map((e) => Container(
-                                                  width: 4.w,
-                                                  height: 4.w,
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 2.w, left: 2.w),
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color:
-                                                        RsColorScheme.primary,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                ))
-                                            .toList())
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                          // calendarBuilders: CalendarBuilders(
+                          //   selectedBuilder: (context, date, _) {
+                          //     return Column(
+                          //       crossAxisAlignment: CrossAxisAlignment.center,
+                          //       children: [
+                          //         Container(
+                          //           width: 30.w,
+                          //           height: 30.w,
+                          //           margin: EdgeInsets.all(4.w),
+                          //           alignment: Alignment.center,
+                          //           decoration: const BoxDecoration(
+                          //             color: RsColorScheme.primary,
+                          //             shape: BoxShape.circle,
+                          //           ),
+                          //           child: Column(
+                          //             crossAxisAlignment:
+                          //                 CrossAxisAlignment.center,
+                          //             children: [
+                          //               2.gH,
+                          //               Text(
+                          //                 '${date.day}',
+                          //                 style: RsTextStyle.regular.copyWith(
+                          //                   color: Colors.white,
+                          //                 ),
+                          //               ),
+                          //               Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.center,
+                          //                   children: [1, 2, 3]
+                          //                       .map((e) => Container(
+                          //                             width: 4.w,
+                          //                             height: 4.w,
+                          //                             margin: EdgeInsets.only(
+                          //                                 bottom: 2.w,
+                          //                                 left: 2.w),
+                          //                             decoration:
+                          //                                 const BoxDecoration(
+                          //                               color: Colors.white,
+                          //                               shape: BoxShape.circle,
+                          //                             ),
+                          //                           ))
+                          //                       .toList())
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     );
+                          //   },
+                          //   defaultBuilder: (context, day, focusedDay) {
+                          //     return Center(
+                          //       child: Column(
+                          //         crossAxisAlignment: CrossAxisAlignment.center,
+                          //         children: [
+                          //           Container(
+                          //             margin: EdgeInsets.all(4.w),
+                          //             alignment: Alignment.center,
+                          //             child: Text(
+                          //               '${day.day}',
+                          //               style: RsTextStyle.regular.copyWith(
+                          //                 color: RsColorScheme.text,
+                          //               ),
+                          //             ),
+                          //           ),
+                          //           Row(
+                          //               mainAxisAlignment:
+                          //                   MainAxisAlignment.center,
+                          //               children: widget.controller
+                          //                   .meetCount(date: day)
+                          //                   .map((e) => Container(
+                          //                         width: 4.w,
+                          //                         height: 4.w,
+                          //                         margin: EdgeInsets.only(
+                          //                             bottom: 2.w, left: 2.w),
+                          //                         decoration:
+                          //                             const BoxDecoration(
+                          //                           color:
+                          //                               RsColorScheme.primary,
+                          //                           shape: BoxShape.circle,
+                          //                         ),
+                          //                       ))
+                          //                   .toList())
+                          //         ],
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
                           onDaySelected: widget.controller.onDaySelected,
                           selectedDayPredicate: (day) => isSameDay(
                               day, widget.controller.selectedDay.value),
@@ -201,10 +201,10 @@ class _MeetingSectionState extends State<MeetingSection> {
                         loading: const ListLongShimmer(
                           count: 3,
                         ),
-                        error: (msg) => RsError(
+                        error: (msg) => RsEmptyData(
                             msg: msg,
                             light: false,
-                            onError: widget.controller.getMeetList),
+                            ),
                         success: (data) => ListView.builder(
                             controller: scrollController,
                             itemCount: data.length,

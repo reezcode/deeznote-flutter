@@ -50,6 +50,41 @@ class RsError extends StatelessWidget {
   }
 }
 
+class RsEmptyData extends StatelessWidget {
+  final String msg;
+  final bool light;
+  const RsEmptyData({
+    Key? key,
+    required this.msg,
+    required this.light,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 16.h),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(
+              Icons.info,
+              color: light ? Colors.white : RsColorScheme.grey,
+              size: 32.w,
+            ),
+            4.gH,
+            Text(
+              msg,
+              style: RsTextStyle.regular
+                  .copyWith(color: light ? Colors.white : RsColorScheme.grey),
+            ),
+            16.gH,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class RsHomeError extends StatelessWidget {
   final String msg;
   final Function() onError;
