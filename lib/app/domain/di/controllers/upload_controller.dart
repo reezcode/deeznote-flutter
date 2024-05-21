@@ -87,7 +87,7 @@ class UploadController extends GetxController {
     return "";
   }
 
-  Future getPhoto() async {
+  Future<void> getPhoto() async {
     final ImagePicker picker = ImagePicker();
     void upFile(XFile? imagePicked) async {
       File imageFile = File(imagePicked!.path);

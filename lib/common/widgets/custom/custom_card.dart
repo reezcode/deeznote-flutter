@@ -31,7 +31,6 @@ class RsCard extends StatelessWidget {
         padding: padding,
         decoration: BoxDecoration(
           color: color ?? RsColorScheme.primaryLight.withOpacity(0.15),
-
           borderRadius: BorderRadius.circular(radius ?? 10),
           // boxShadow: [
           //   BoxShadow(
