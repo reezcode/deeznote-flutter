@@ -41,6 +41,10 @@ class MeetingSignController extends GetxController {
     super.onClose();
   }
 
+  void resetSignature() {
+    signaturePadKey.currentState!.clear();
+  }
+
   void submitSign() async {
     if (signPerson.value == "PIC") {
       await EasyLoading.show();

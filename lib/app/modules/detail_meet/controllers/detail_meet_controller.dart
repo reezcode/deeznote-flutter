@@ -163,38 +163,57 @@ class DetailMeetController extends GetxController {
     meetDetail.value = [
       {
         'type': 'text',
+        'icon': Icons.email,
+        'title': 'Stakeholder Email',
+        'url': '',
+        'description': meetData['customerEmail'] ?? '-'
+      },
+      {
+        'type': 'text',
+        'icon': Icons.work_rounded,
+        'title': 'Project Name',
+        'url': '',
+        'description': meetData['projectName'] ?? '-'
+      },
+      {
+        'type': 'text',
         'icon': Icons.location_city_rounded,
         'title': 'Office Location',
         'url': '',
-        'description': meetData['officeLocation']['locationName'] ?? '-'
+        'description': meetData['officeLocation'] is Map
+            ? meetData['officeLocation']['locationName'] ?? '-'
+            : meetData['officeLocation']
       },
       {
         'type': 'text',
         'icon': Icons.people_alt_rounded,
         'title': 'Involved Staff',
         'url': '',
-        'description':
-            meetData['users'].map((e) => e['name']).toList().join(', ')
+        'description': meetData['users'].isNotEmpty
+            ? meetData['users'].map((e) => e['name']).toList().join(', ')
+            : 'Staff not chosen yet'
       },
       {
-        'type': 'url',
+        'type': 'file',
         'icon': Icons.file_copy_rounded,
         'title': 'File Attachment',
-        'description': meetData['fileAttachment'].isNotEmpty
-            ? meetData['fileAttachment'].first['fileTitle']
-            : '-',
-        'url': meetData['fileAttachment'].isNotEmpty
-            ? meetData['fileAttachment'].first['fileLink']
-            : null
+        'description': 'View attached files',
+        'fileSum': meetData['fileAttachment'].length.toString(),
+        'fileList': meetData['fileAttachment'].isNotEmpty
+            ? meetData['fileAttachment']
+            : []
       },
-      {
-        'type': 'url',
-        'icon': Icons.link,
-        'title': 'Meeting Link',
-        'url': meetData.containsKey('meetLink') ? meetData['meetLink'] : '-',
-        'description':
-            meetData.containsKey('meetLink') ? meetData['meetLink'] : '-'
-      },
+      if (meetData.containsKey('meetLink'))
+        if (meetData['meetLink'] != null && meetData['meetLink'].isNotEmpty)
+          {
+            'type': 'url',
+            'icon': Icons.link,
+            'title': 'Meeting Link',
+            'url':
+                meetData.containsKey('meetLink') ? meetData['meetLink'] : '-',
+            'description':
+                meetData.containsKey('meetLink') ? meetData['meetLink'] : '-'
+          },
     ];
 
     buttonDetail.value = [
@@ -219,9 +238,13 @@ class DetailMeetController extends GetxController {
         'icon': Icons.draw_rounded,
         'title': 'Meeting Sign',
         'description': "Add or view meeting sign",
-        'isEnabled': isNotulensiExist.value && !isSigned.value,
+        'isEnabled': isNotulensiExist.value &&
+            !isSigned.value &&
+            meetData['status_code'] == 1,
         'onTap': () {
-          if (isNotulensiExist.value && !isSigned.value) {
+          if (isNotulensiExist.value &&
+              !isSigned.value &&
+              meetData['status_code'] == 1) {
             Get.toNamed(Routes.MEETING_SIGN, arguments: {
               'notulensiId': meetData['notulensi'].first['idNotulensi']
             });
@@ -231,6 +254,8 @@ class DetailMeetController extends GetxController {
             }
             if (!isNotulensiExist.value) {
               RsToast.show("Hold On", "Notulensi not created yet");
+            } else {
+              RsToast.show("Hold On", "Meeting already finished");
             }
           }
         }
@@ -277,6 +302,7 @@ class DetailMeetController extends GetxController {
   void editMeet() {
     Get.toNamed(Routes.CREATE_MEET,
         arguments: {'data': meetData, 'type': FormAction.update});
+    print("MEET DATA: $meetData");
   }
 
   void deleteMeet() {

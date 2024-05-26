@@ -47,7 +47,31 @@ class MeetingSignView extends GetView<MeetingSignController> {
                   backgroundColor: Colors.white,
                 ),
               ),
+              // clear chip to clear signature
+
               32.gH,
+              RsButton(
+                width: RsScreen.w * 0.65.w,
+                buttonColor: RsColorScheme.danger,
+                radius: 10.r,
+                onTap: controller.resetSignature,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.clear,
+                      color: Colors.white,
+                    ),
+                    8.gW,
+                    Text(
+                      "Reset Signature",
+                      style: RsTextStyle.bold
+                          .copyWith(color: Colors.white, fontSize: 16.sp),
+                    )
+                  ],
+                ),
+              ),
+              16.gH,
               RsButton(
                 width: RsScreen.w * 0.65.w,
                 buttonColor: RsColorScheme.secondary,

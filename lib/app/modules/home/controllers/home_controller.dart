@@ -200,6 +200,7 @@ class HomeController extends GetxController {
           statusMeetCode: statusMeetCode);
       if (res.isNotEmpty) {
         res.insert(0, {});
+        res.add({});
         emit(RsEvent.success(res));
         refresh();
       } else {

@@ -2,11 +2,14 @@ abstract class MeetAbstractRepository {
   Future<Map> create({
     required String meetTitle,
     String? meetLink,
+    String? alternativeLocation,
     required String meetDate,
-    required String officeId,
+    required String projectName,
+    String? officeId,
     required int meetReminder,
     required List involvedStaff,
     required String customerName,
+    required String customerEmail,
     List? attachment,
   });
 
@@ -28,11 +31,14 @@ abstract class MeetAbstractRepository {
     required String id,
     required String meetTitle,
     String? meetLink,
+    String? alternativeLocation,
     required String meetDate,
-    required String officeId,
+    required String projectName,
+    String? officeId,
     required int meetReminder,
     required List involvedStaff,
     required String customerName,
+    required String customerEmail,
     List? attachment,
   });
 

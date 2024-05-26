@@ -30,7 +30,7 @@ class CardBlank extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: RsScreen.w,
-      height: 120.h,
+      height: 130.h,
       decoration: BoxDecoration(
         color: RsColorScheme.grey.withOpacity(0.05),
         borderRadius: BorderRadius.circular(10),

@@ -202,9 +202,9 @@ class _MeetingSectionState extends State<MeetingSection> {
                           count: 3,
                         ),
                         error: (msg) => RsEmptyData(
-                            msg: msg,
-                            light: false,
-                            ),
+                          msg: msg,
+                          light: false,
+                        ),
                         success: (data) => ListView.builder(
                             controller: scrollController,
                             itemCount: data.length,
@@ -233,6 +233,9 @@ class _MeetingSectionState extends State<MeetingSection> {
                                     16.gH
                                   ],
                                 );
+                              }
+                              if (index == data.length - 1) {
+                                return 100.gH;
                               }
                               return RsCardV1(
                                   rawDate: meet['meetDate'],

@@ -204,7 +204,7 @@ class HomeSection extends StatelessWidget {
                     );
                   }).toList(),
                   Visibility(
-                      visible: data['upcomingMeeting'].length == 1,
+                      visible: data[controller.meetTabId.value].length < 3,
                       child: const CardBlank()),
                   50.gH,
                 ])

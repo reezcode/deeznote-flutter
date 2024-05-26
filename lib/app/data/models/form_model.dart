@@ -24,6 +24,8 @@ class RsFormModel {
       this.validator,
       this.allowedExtensions,
       this.initDateValue,
+      this.validatorDateTime,
+      this.validatorDynamic,
       this.fileType});
 
   FormType formType;
@@ -37,6 +39,8 @@ class RsFormModel {
   void Function()? onObscurePressed;
   void Function()? onObscureSecondPressed;
   String? Function(String?)? validator;
+  String? Function(DateTime?)? validatorDateTime;
+  String? Function(dynamic)? validatorDynamic;
   bool obscureText;
   bool? obscureSecondText;
   void Function(dynamic)? onChanged;
@@ -46,23 +50,24 @@ class RsFormModel {
   List<String>? allowedExtensions;
   DateTime? initDateValue;
 
-  RsFormModel copyWith({
-    FormType? formType,
-    String? name,
-    String? hint,
-    String? label,
-    String? valueField,
-    String? textField,
-    TextEditingController? controller,
-    IconData? icon,
-    void Function()? onObscurePressed,
-    bool? obscureText,
-    void Function(dynamic)? onChanged,
-    List<dynamic>? dataDropdown,
-    Future<ResponseModel>? futureDataDropdown,
-    FileType? fileType,
-    List<String>? allowedExtensions,
-  }) =>
+  RsFormModel copyWith(
+          {FormType? formType,
+          String? name,
+          String? hint,
+          String? label,
+          String? valueField,
+          String? textField,
+          TextEditingController? controller,
+          IconData? icon,
+          void Function()? onObscurePressed,
+          bool? obscureText,
+          void Function(dynamic)? onChanged,
+          List<dynamic>? dataDropdown,
+          Future<ResponseModel>? futureDataDropdown,
+          FileType? fileType,
+          List<String>? allowedExtensions,
+          String? Function(DateTime?)? validatorDateTime,
+          String? Function(dynamic)? validatorDynamic}) =>
       RsFormModel(
         formType: formType ?? this.formType,
         name: name ?? this.name,
@@ -83,6 +88,8 @@ class RsFormModel {
         futureDataDropdown: futureDataDropdown ?? this.futureDataDropdown,
         fileType: fileType ?? this.fileType,
         allowedExtensions: allowedExtensions ?? this.allowedExtensions,
+        validatorDateTime: validatorDateTime ?? this.validatorDateTime,
+        validatorDynamic: validatorDynamic ?? this.validatorDynamic,
       );
 
   factory RsFormModel.fromJson(Map<String, dynamic> json) => RsFormModel(

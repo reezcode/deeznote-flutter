@@ -9,23 +9,29 @@ class MeetRepository implements MeetAbstractRepository {
   Future<Map> create(
       {required String meetTitle,
       String? meetLink,
+      String? alternativeLocation,
       required String meetDate,
-      required String officeId,
+      required String projectName,
+      String? officeId,
       required int meetReminder,
       required List involvedStaff,
       required String customerName,
+      required String customerEmail,
       List? attachment}) async {
     try {
       final res = await RsAPI.instance.post(
           endpoint: Endpoint.createMeet,
           data: {
             'meetTitle': meetTitle,
+            "projectName": projectName,
             'meetLink': meetLink,
             'meetDate': meetDate,
             'idOfficeLocations': officeId,
+            'alternativeLocation': alternativeLocation,
             'meetReminder': meetReminder,
             'users': involvedStaff,
             'customerName': customerName,
+            'customerEmail': customerEmail,
             'fileAttachment': attachment,
           },
           token: 'Bearer ${'token'.load()}');
@@ -99,11 +105,14 @@ class MeetRepository implements MeetAbstractRepository {
       {required String id,
       required String meetTitle,
       String? meetLink,
+      String? alternativeLocation,
       required String meetDate,
-      required String officeId,
+      required String projectName,
+      String? officeId,
       required int meetReminder,
       required List involvedStaff,
       required String customerName,
+      required String customerEmail,
       List? attachment}) async {
     try {
       final res = await RsAPI.instance.patch(
@@ -111,12 +120,15 @@ class MeetRepository implements MeetAbstractRepository {
           id: id,
           data: {
             'meetTitle': meetTitle,
+            "projectName": projectName,
             'meetLink': meetLink,
             'meetDate': meetDate,
             'idOfficeLocations': officeId,
+            'alternativeLocation': alternativeLocation,
             'meetReminder': meetReminder,
             'users': involvedStaff,
             'customerName': customerName,
+            'customerEmail': customerEmail,
             'fileAttachment': attachment,
           },
           token: 'Bearer ${'token'.load()}');

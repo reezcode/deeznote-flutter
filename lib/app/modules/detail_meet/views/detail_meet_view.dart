@@ -103,6 +103,8 @@ class DetailMeetView extends GetView<DetailMeetController> {
                                 icon: e['icon'],
                                 title: e['title'],
                                 type: e['type'],
+                                fileSum: e['fileSum'],
+                                fileList: e['fileList'],
                                 description: e['description'],
                                 onTap: () {
                                   openBrowser(Uri.parse(

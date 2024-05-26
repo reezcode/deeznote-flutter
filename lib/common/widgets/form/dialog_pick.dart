@@ -123,17 +123,6 @@ class _RsDialogPickState extends State<RsDialogPick> {
                   ),
                 ),
               ),
-              12.gH,
-              RsButton(
-                  width: 130.w,
-                  height: 30.h,
-                  splashColor: RsColorScheme.secondary,
-                  onTap: _showDialog,
-                  child: Text(
-                    "Choose Staff",
-                    style: RsTextStyle.bold
-                        .copyWith(color: Colors.white, fontSize: 13.sp),
-                  ))
             ],
           ),
         )));

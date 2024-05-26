@@ -16,15 +16,15 @@ dependencies:
   get_storage: ^2.1.1
   google_fonts: ^4.0.4
   image_picker: ^1.0.4
-  intl: ^0.18.1
+  intl: ^0.19.0
   json_annotation: any
   liquid_pull_to_refresh: ^3.0.1
   photo_view: ^0.14.0
-  dio: ^5.3.3
+  dio: ^5.4.3+1
   retrofit: any
   shimmer: ^3.0.0
-  flutter_form_builder: ^9.1.0
-  form_builder_validators: ^9.0.0
+  flutter_form_builder: ^9.2.1
+  form_builder_validators: ^10.0.1
   overlay_support: ^2.1.0
   flutter_animate: ^4.3.0
   syncfusion_flutter_datepicker: ^24.2.7
@@ -36,20 +36,21 @@ dependencies:
   table_calendar: ^3.0.9
   animations: ^2.0.11
   animate_do: ^3.3.3
+  http: 1.2.1
   pull_to_refresh: ^2.0.0
   syncfusion_flutter_signaturepad: ^24.2.8
-  html_editor_enhanced: ^2.5.1
+  html_editor_enhanced: ^2.6.0
   url_launcher: ^6.0.3
   get: 4.6.6
   flutter:
     sdk: flutter
   simple_circular_progress_bar: ^1.0.2
-  file_picker: ^5.5.0
+  file_picker: ^8.0.3
 
 dev_dependencies:
   build_runner: any
   built_value_generator: any
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
   json_serializable: any
   retrofit_generator: any
   flutter_launcher_icons: "^0.13.1"

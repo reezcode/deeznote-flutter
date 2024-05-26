@@ -28,6 +28,8 @@ class RsFormBuilder extends StatelessWidget {
   final void Function()? onObscurePressed;
   final void Function()? onObscureSecondPressed;
   final String? Function(String?)? validator;
+  final String? Function(DateTime?)? validatorDateTime;
+  final String? Function(dynamic)? validatorDynamic;
   final bool obscureText;
   final bool? obscureSecondText;
   final void Function(dynamic)? onChanged;
@@ -36,28 +38,29 @@ class RsFormBuilder extends StatelessWidget {
   final FileType? fileType;
   final List<String>? allowedExtensions;
   final DateTime? initDateValue;
-  const RsFormBuilder({
-    Key? key,
-    required this.formType,
-    required this.name,
-    this.hint,
-    this.label,
-    this.valueField,
-    this.textField,
-    required this.controller,
-    this.icon,
-    this.onObscurePressed,
-    this.onObscureSecondPressed,
-    this.validator,
-    required this.obscureText,
-    this.obscureSecondText,
-    this.onChanged,
-    this.dataDropdown,
-    this.futureDataDropdown,
-    this.fileType,
-    this.allowedExtensions,
-    this.initDateValue,
-  }) : super(key: key);
+  const RsFormBuilder(
+      {super.key,
+      required this.formType,
+      required this.name,
+      this.hint,
+      this.label,
+      this.valueField,
+      this.textField,
+      required this.controller,
+      this.icon,
+      this.onObscurePressed,
+      this.onObscureSecondPressed,
+      this.validator,
+      required this.obscureText,
+      this.obscureSecondText,
+      this.onChanged,
+      this.dataDropdown,
+      this.futureDataDropdown,
+      this.fileType,
+      this.allowedExtensions,
+      this.initDateValue,
+      this.validatorDateTime,
+      this.validatorDynamic});
 
   @override
   Widget build(BuildContext context) {
@@ -122,10 +125,22 @@ class RsFormBuilder extends StatelessWidget {
         label: label,
         name: name,
         onChanged: onChanged,
+        validator: validatorDateTime,
       );
     } else if (formType == FormType.dialogPick) {
       return RsDialogPick(
         label: label,
+      );
+    } else if (formType == FormType.radio) {
+      return RsRadioOptions(
+        name: name,
+        controller: controller,
+        dataList: dataDropdown,
+        value: valueField,
+        onChanged: onChanged,
+        text: textField,
+        label: label,
+        validator: validatorDynamic,
       );
     } else {
       return const SizedBox();
@@ -144,7 +159,7 @@ class RsFormContainer extends StatefulWidget {
   final String buttonText;
   final IconData? icon;
   const RsFormContainer({
-    Key? key,
+    super.key,
     this.margin,
     this.padding,
     required this.action,
@@ -154,7 +169,7 @@ class RsFormContainer extends StatefulWidget {
     required this.config,
     required this.buttonText,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   State<RsFormContainer> createState() => _RsFormContainerState();
@@ -181,6 +196,8 @@ class _RsFormContainerState extends State<RsFormContainer>
                     hint: e.hint,
                     icon: e.icon,
                     label: e.label,
+                    validatorDateTime: e.validatorDateTime,
+                    validatorDynamic: e.validatorDynamic,
                     onChanged: (p) {
                       e.onChanged?.call(p);
                       MainConfig.universalController.formKeyChecker(_formKey);

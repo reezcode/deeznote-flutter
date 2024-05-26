@@ -16,7 +16,7 @@ import 'package:image_picker/image_picker.dart';
 class UploadController extends GetxController {
   var imgrUrl = {}.obs;
   RxBool isUploading = false.obs;
-  RxString fileName = "".obs;
+  RxList<Map> fileList = <Map>[].obs;
   Rx<File> file = File("").obs;
   RxList<Widget> photoList = <Widget>[].obs;
   List<String> photoSourceList = [];
@@ -25,6 +25,11 @@ class UploadController extends GetxController {
 
   String getImgUrl() {
     return imgrUrl['preview'];
+  }
+
+  void onRemoveFile(String id) {
+    listFile.remove(id);
+    fileList.removeWhere((element) => element['id'] == id);
   }
 
   void pickFiles({
@@ -40,7 +45,6 @@ class UploadController extends GetxController {
     if (result != null) {
       File fileNew = File(result.files.single.path!);
       file.value = fileNew;
-      fileName.value = result.files.single.name;
 
       try {
         isUploading.value = true;
@@ -51,6 +55,12 @@ class UploadController extends GetxController {
         if (res.data != null) {
           isUploading.value = false;
           listFile.add(res.data.first['idFileContainer']);
+          fileList.add({
+            'id': res.data.first['idFileContainer'],
+            'name': result.files.single.name,
+            'size':
+                '${(result.files.single.size / 1000000).toStringAsFixed(2)} MB',
+          });
           RsToast.show("Success", "File uploaded successfully 🎉");
         } else {
           RsToast.show("Error", "Response data empty");

@@ -16,15 +16,16 @@ import '../../../app/domain/di/controllers/upload_controller.dart';
 import '../../../config/endpoints_config.dart';
 import '../../styles/color_scheme.dart';
 import '../../styles/rs_style_library.dart';
+import '../../utils/browser.dart';
 import '../../utils/screen.dart';
 import '../custom/custom_snackbar.dart';
 
 class RsProfileUpload extends StatefulWidget {
   final TextEditingController controller;
   const RsProfileUpload({
-    Key? key,
+    super.key,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   State<RsProfileUpload> createState() => _RsProfileUploadState();
@@ -184,7 +185,7 @@ class RsUploadFile extends StatefulWidget {
   final FileType? fileType;
   final List<String>? allowedExtensions;
   const RsUploadFile({
-    Key? key,
+    super.key,
     this.isMulti,
     this.label,
     this.name,
@@ -192,7 +193,7 @@ class RsUploadFile extends StatefulWidget {
     this.icon,
     this.fileType,
     this.allowedExtensions,
-  }) : super(key: key);
+  });
 
   @override
   State<RsUploadFile> createState() => _RsUploadFileState();
@@ -218,6 +219,17 @@ class _RsUploadFileState extends State<RsUploadFile> {
                     ],
                   )
                 : const SizedBox(),
+            Column(
+              children: controller.fileList.value
+                  .map((e) => FileAttach(
+                      onRemove: () {
+                        controller.onRemoveFile(e['id']);
+                      },
+                      fileName: e['name'],
+                      link: e['link'],
+                      fileSize: e['size'].toString()))
+                  .toList(),
+            ),
             GestureDetector(
               onTap: () {
                 controller.pickFiles(
@@ -229,23 +241,21 @@ class _RsUploadFileState extends State<RsUploadFile> {
                 height: 60.w,
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
                 decoration: BoxDecoration(
-                    border: Border.all(color: RsColorScheme.grey),
+                    border: Border.all(color: RsColorScheme.primary),
                     borderRadius: BorderRadius.circular(15.w)),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(widget.icon ?? Icons.upload_rounded,
-                        color: RsColorScheme.grey),
+                        color: RsColorScheme.primary),
                     12.gW,
                     Text(
-                      controller.fileName.value.isNotEmpty
-                          ? controller.fileName.value
-                          : widget.hint ?? "Upload file here",
+                      "Choose file",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: RsTextStyle.regular.copyWith(
-                          fontSize: 14.sp,
-                          color: RsColorScheme.text.withOpacity(0.7)),
+                          fontSize: 14.sp, color: RsColorScheme.primary),
                     )
                   ],
                 ),
@@ -253,6 +263,99 @@ class _RsUploadFileState extends State<RsUploadFile> {
             ),
           ],
         )));
+  }
+}
+
+class FileAttach extends StatelessWidget {
+  final String fileName;
+  final String? fileSize;
+  final String? link;
+  final Function()? onRemove;
+  final Function()? onTap;
+  const FileAttach(
+      {Key? key,
+      required this.fileName,
+      this.fileSize,
+      this.onRemove,
+      this.link,
+      this.onTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (link != null) {
+          openBrowser(Uri.parse(link ?? 'http://google.com'));
+        }
+      },
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 16.w),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 50.w,
+              height: 50.w,
+              decoration: BoxDecoration(
+                color: RsColorScheme.primaryLight.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.file_present_rounded,
+                  color: RsColorScheme.primary,
+                  size: 30.sp,
+                ),
+              ),
+            ),
+            16.gW,
+            SizedBox(
+              width: onRemove == null ? RsScreen.w * 0.6 : RsScreen.w * 0.45,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    fileName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: RsTextStyle.medium.copyWith(fontSize: 14.sp),
+                  ),
+                  4.gH,
+                  Text(
+                    link != null ? link ?? '-' : "Size: $fileSize",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: RsTextStyle.regular.copyWith(fontSize: 12.sp),
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            if (onRemove != null)
+              GestureDetector(
+                onTap: onRemove,
+                child: Container(
+                  width: 30.w,
+                  height: 30.w,
+                  decoration: BoxDecoration(
+                    color: RsColorScheme.danger,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.close_rounded,
+                      color: RsColorScheme.background,
+                      size: 20.sp,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

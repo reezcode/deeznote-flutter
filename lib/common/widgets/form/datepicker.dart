@@ -13,6 +13,7 @@ class RsDatePicker extends StatelessWidget {
   final String? label;
   final Function(DateTime?)? onChanged;
   final DateTime? initDateValue;
+  final String? Function(DateTime?)? validator;
   const RsDatePicker({
     Key? key,
     required this.name,
@@ -20,6 +21,7 @@ class RsDatePicker extends StatelessWidget {
     this.label,
     this.onChanged,
     this.initDateValue,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class RsDatePicker extends StatelessWidget {
               firstDate: DateTime.now(),
               onChanged: onChanged,
               initialValue: initDateValue,
+              validator: validator,
             )
           ],
         ));

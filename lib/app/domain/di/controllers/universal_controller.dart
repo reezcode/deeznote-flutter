@@ -51,7 +51,7 @@ class UniversalController extends GetxController with RsValidationMixin {
 
   void formKeyChecker(GlobalKey<FormBuilderState> formKey) {
     isValid.value = formKey.currentState?.validate(
-            focusOnInvalid: false, autoScrollWhenFocusOnInvalid: true) ??
+            focusOnInvalid: false, autoScrollWhenFocusOnInvalid: false) ??
         false;
   }
 

@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:deeznote/common/utils/file.dart';
+import 'package:http/http.dart' as http;
 import 'package:deeznote/common/widgets/rs_turing.dart';
 import 'package:deeznote/config/main_config.dart';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -147,6 +149,34 @@ class RsAPI {
   //     rethrow;
   //   }
   // }
+  // Future<void> download({
+  //   required String url,
+  //   required String jwtToken,
+  // }) async {
+  //   Dio dio = Dio();
+  //   dio.options.headers['Authorization'] = 'Bearer $jwtToken';
+
+  //   try {
+  //     Directory? downloadsDirectory = await getExternalStorageDirectory();
+  //     if (downloadsDirectory == null) {
+  //       throw FileSystemException('Failed to get downloads directory.');
+  //     }
+  //     String fileName = url.split('/').last;
+  //     String? savePath = await FileHelper().getDownloadPath();
+  //     savePath = '$savePath/$fileName.pdf';
+  //     Response response = await dio.download(url, savePath,
+  //         onReceiveProgress: (received, total) {
+  //       if (total != -1) {
+  //         print('Received: ${received / total * 100}%');
+  //       }
+  //     });
+  //     RsToast.show(
+  //         'Success', 'File downloaded successfully in Downloads folder.');
+  //   } catch (error) {
+  //     print('Failed to download file: $error');
+  //   }
+  // }
+
   Future<void> download({
     required String url,
     required String jwtToken,
@@ -155,23 +185,33 @@ class RsAPI {
     dio.options.headers['Authorization'] = 'Bearer $jwtToken';
 
     try {
+      // Get the downloads directory for default fallback
       Directory? downloadsDirectory = await getExternalStorageDirectory();
       if (downloadsDirectory == null) {
         throw FileSystemException('Failed to get downloads directory.');
       }
+
+      // Use File Picker to choose a custom save location
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+      if (selectedDirectory == null) {
+        throw Exception('No directory selected');
+      }
+
       String fileName = url.split('/').last;
-      String? savePath = await FileHelper().getDownloadPath();
-      savePath = '$savePath/$fileName.pdf';
+      String savePath = '$selectedDirectory/$fileName.pdf';
+
       Response response = await dio.download(url, savePath,
           onReceiveProgress: (received, total) {
         if (total != -1) {
           print('Received: ${received / total * 100}%');
         }
       });
+
       RsToast.show(
-          'Success', 'File downloaded successfully in Downloads folder.');
+          'Success', 'File downloaded successfully to $selectedDirectory.');
     } catch (error) {
       print('Failed to download file: $error');
+      RsToast.show('Error', 'Failed to download file: $error');
     }
   }
 
@@ -227,7 +267,7 @@ class RsAPI {
     try {
       var data = FormData();
       data.files.add(MapEntry(
-        "file",
+        "files",
         MultipartFile.fromFileSync(
           file.path,
           filename: file.path.split(Platform.pathSeparator).last,
@@ -240,7 +280,7 @@ class RsAPI {
               'authorization': token,
               if (otherOptions != null) ...otherOptions
             },
-            contentType: 'application/json',
+            contentType: 'multipart/form-data',
           ),
           queryParameters: queryParameters,
           cancelToken: cancelToken,

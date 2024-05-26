@@ -1,16 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:currency_formatter/currency_formatter.dart';
+import 'package:deeznote/common/extensions/gaps.dart';
+import 'package:deeznote/common/widgets/custom/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:deeznote/common/extensions/gaps.dart';
 
 import '../../styles/color_scheme.dart';
 import '../../styles/text_style.dart';
 import '../../utils/currency.dart';
 import '../../utils/format_date.dart';
 import '../../utils/screen.dart';
-import '../custom/custom_card.dart';
 import '../rs_turing.dart';
 import 'rs_custom_circle_card.dart';
 
@@ -365,25 +364,30 @@ class RsCardStaff extends StatelessWidget {
               image: image,
             ),
             8.gW,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  name ?? "Resma Adi Nugroho",
-                  style: RsTextStyle.bold.copyWith(
-                      fontSize: 14.sp,
-                      color: isCheck! ? Colors.white : RsColorScheme.primary),
-                ),
-                Text(
-                  role ?? "Mobile Developer",
-                  style: RsTextStyle.medium.copyWith(
-                      fontSize: 12.sp,
-                      color: isCheck!
-                          ? Colors.white.withOpacity(0.8)
-                          : RsColorScheme.text.withOpacity(0.8)),
-                ),
-              ],
+            SizedBox(
+              width: RsScreen.w * 0.4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    name ?? "Resma Adi Nugroho",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: RsTextStyle.bold.copyWith(
+                        fontSize: 14.sp,
+                        color: isCheck! ? Colors.white : RsColorScheme.primary),
+                  ),
+                  Text(
+                    role ?? "Mobile Developer",
+                    style: RsTextStyle.medium.copyWith(
+                        fontSize: 12.sp,
+                        color: isCheck!
+                            ? Colors.white.withOpacity(0.8)
+                            : RsColorScheme.text.withOpacity(0.8)),
+                  ),
+                ],
+              ),
             ),
             const Spacer(),
             isCheck!
@@ -408,14 +412,18 @@ class RsCardListDetail extends StatefulWidget {
   final String description;
   final String type;
   final Function()? onTap;
-  const RsCardListDetail({
-    Key? key,
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.type,
-    this.onTap,
-  }) : super(key: key);
+  final String? fileSum;
+  final List? fileList;
+  const RsCardListDetail(
+      {Key? key,
+      required this.icon,
+      required this.title,
+      required this.description,
+      required this.type,
+      this.fileSum,
+      this.onTap,
+      this.fileList})
+      : super(key: key);
 
   @override
   State<RsCardListDetail> createState() => _RsCardListDetailState();
@@ -435,7 +443,24 @@ class _RsCardListDetailState extends State<RsCardListDetail> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onTap,
+      onTap: () {
+        if (widget.type == "file" && widget.fileList != null) {
+          RsDialog.show(children: [
+            Text("File Attachments",
+                style: RsTextStyle.bold
+                    .copyWith(fontSize: 14.sp, color: RsColorScheme.text)),
+            16.gH,
+            ...widget.fileList!
+                .map((e) => FileAttach(
+                      link: e['fileLink'],
+                      fileName: e['fileTitle'],
+                    ))
+                .toList(),
+          ]);
+        } else if (isUrl) {
+          widget.onTap!();
+        }
+      },
       child: Container(
         width: RsScreen.w,
         padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 8.h),
@@ -460,11 +485,17 @@ class _RsCardListDetailState extends State<RsCardListDetail> {
                       .copyWith(fontSize: 14.sp, color: RsColorScheme.text),
                 ),
                 4.gH,
-                Text(
-                  widget.description,
-                  style: RsTextStyle.medium
-                      .copyWith(fontSize: 12.sp, color: RsColorScheme.text),
-                ),
+                widget.type == "file"
+                    ? Text(
+                        "${widget.fileSum ?? "0"} files",
+                        style: RsTextStyle.medium.copyWith(
+                            fontSize: 12.sp, color: RsColorScheme.text),
+                      )
+                    : Text(
+                        widget.description,
+                        style: RsTextStyle.medium.copyWith(
+                            fontSize: 12.sp, color: RsColorScheme.text),
+                      ),
               ],
             )
           ],
